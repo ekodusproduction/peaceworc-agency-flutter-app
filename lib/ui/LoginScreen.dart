@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/SignUpScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -94,16 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                           )
                       ),
-                      onPressed: () => {}
+                      onPressed: () => {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+                  }
                   ),
                 ),
-                /*IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white,),
-                  iconSize: 50,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),*/
                 SizedBox(height: 30,),
                 Text(
                   'Do not have an account?',
