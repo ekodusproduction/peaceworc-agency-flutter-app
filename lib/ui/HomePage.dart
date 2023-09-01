@@ -7,33 +7,114 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int pageIndex = 0;
-
-  final pages = [
-    const Page1(),
-    const Page2(),
-    const Page3(),
-    const Page4(),
+  int currentTab = 0;
+  final List<Widget> pages = [
+     Page1(),
+     Page2(),
+     Page3(),
+     Page4(),
   ];
+  final PageStorageBucket bucket = PageStorageBucket();
+  Widget currentScreen = Page1();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: pages[pageIndex],
-      bottomNavigationBar: buildMyNavBar(context),
+        body: PageStorage(
+          child: currentScreen,
+          bucket: bucket,
+        ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add, color: Colors.white,),
+          backgroundColor: Colors.black,
+          shape: CircleBorder(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        notchMargin: 5,
+        color: Colors.white,
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: MaterialButton(
+                  minWidth: 40,
+                  onPressed: (){
+                    setState(() {
+                      currentScreen = Page1();
+                      currentTab = 0;
+                    });
+                  },
+                  child: Icon(
+                    Icons.dashboard,
+                    color: currentTab == 0 ? Colors.black : Colors.grey[600],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: MaterialButton(
+                  minWidth: 40,
+                  onPressed: (){
+                    setState(() {
+                      currentScreen = Page2();
+                      currentTab = 1;
+                    });
+                  },
+                  child: Icon(
+                    Icons.person,
+                    color: currentTab == 1 ? Colors.black : Colors.grey[600],
+                  ),
+                ),
+              ),
+              SizedBox(width: 60,),
+              Expanded(
+                child: MaterialButton(
+                  minWidth: 40,
+                  onPressed: (){
+                    setState(() {
+                      currentScreen = Page3();
+                      currentTab = 2;
+                    });
+                  },
+                  child: Icon(
+                    Icons.notifications,
+                    color: currentTab == 2 ? Colors.black : Colors.grey[600],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: MaterialButton(
+                  minWidth: 40,
+                  onPressed: (){
+                    setState(() {
+                      currentScreen = Page4();
+                      currentTab = 3;
+                    });
+                  },
+                  child: Icon(
+                    Icons.settings,
+                    color: currentTab == 3 ? Colors.black : Colors.grey[600],
+                  ),
+                ),
+              ),
+            ],
+          )
+        ),
+      ),
     );
   }
 
+/*
   Container buildMyNavBar(BuildContext context) {
     return Container(
       height: 60,
       decoration: BoxDecoration(
         color: Colors.grey,
-        /*borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),*/
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -118,6 +199,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+*/
 }
 
 class Page1 extends StatelessWidget {
