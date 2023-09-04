@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/LoginScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -112,7 +113,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     )
                                 )
                             ),
-                            onPressed: () => {}
+                            onPressed: () => {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+                            }
                         ),
                       ),
                       SizedBox(height: 30,),

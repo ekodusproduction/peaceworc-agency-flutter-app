@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/DashBoardScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -9,13 +10,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentTab = 0;
   final List<Widget> pages = [
-     Page1(),
+     DashBoardScreen(),
      Page2(),
      Page3(),
      Page4(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Page1();
+  Widget currentScreen = DashBoardScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = Page1();
+                      currentScreen = DashBoardScreen();
                       currentTab = 0;
                     });
                   },
@@ -104,27 +105,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           )
-        ),
-      ),
-    );
-  }
-}
-
-class Page1 extends StatelessWidget {
-  const Page1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          "Page Number 1",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
         ),
       ),
     );
