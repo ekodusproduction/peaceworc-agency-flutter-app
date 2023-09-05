@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/post_job_list/PostJobListScreen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -145,7 +146,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 const Expanded(
                     child:  TabBarView(
                       children: [
-                        Icon(Icons.flight, size: 350),
+                        PostJobListScreen(),
                         Icon(Icons.directions_transit, size: 350),
                         Icon(Icons.directions_car, size: 350),
                         Icon(Icons.child_friendly_sharp, size: 350),
