@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/DashBoardScreen.dart';
+import 'package:peaceworc_agency/ui/JobPostScreen.dart';
 import 'package:peaceworc_agency/ui/NotificationListScreen.dart';
 import 'package:peaceworc_agency/ui/ProfileScreen.dart';
 import 'package:peaceworc_agency/ui/SettingsScreen.dart';
@@ -29,7 +30,9 @@ class _HomePageState extends State<HomePage> {
           bucket: bucket,
         ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => JobPostScreen()));
+          },
           child: Icon(Icons.add, color: Colors.white,),
           backgroundColor: Colors.black,
           shape: CircleBorder(),
