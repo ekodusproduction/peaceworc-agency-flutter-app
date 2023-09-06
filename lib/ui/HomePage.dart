@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/DashBoardScreen.dart';
+import 'package:peaceworc_agency/ui/NotificationListScreen.dart';
+import 'package:peaceworc_agency/ui/SettingsScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,8 +14,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> pages = [
      DashBoardScreen(),
      Page2(),
-     Page3(),
-     Page4(),
+     NotificationListScreen(),
+     SettingsScreen(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = DashBoardScreen();
@@ -78,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = Page3();
+                      currentScreen = NotificationListScreen();
                       currentTab = 2;
                     });
                   },
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = Page4();
+                      currentScreen = SettingsScreen();
                       currentTab = 3;
                     });
                   },
@@ -121,48 +123,6 @@ class Page2 extends StatelessWidget {
       child: Center(
         child: Text(
           "Page Number 2",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Page3 extends StatelessWidget {
-  const Page3({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          "Page Number 3",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  const Page4({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          "Page Number 4",
           style: TextStyle(
             color: Colors.green[900],
             fontSize: 45,
