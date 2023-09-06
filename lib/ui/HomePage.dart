@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/DashBoardScreen.dart';
 import 'package:peaceworc_agency/ui/NotificationListScreen.dart';
+import 'package:peaceworc_agency/ui/ProfileScreen.dart';
 import 'package:peaceworc_agency/ui/SettingsScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   int currentTab = 0;
   final List<Widget> pages = [
      DashBoardScreen(),
-     Page2(),
+     ProfileScreen(),
      NotificationListScreen(),
      SettingsScreen(),
   ];
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = Page2();
+                      currentScreen = ProfileScreen();
                       currentTab = 1;
                     });
                   },
@@ -107,27 +108,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           )
-        ),
-      ),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          "Page Number 2",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
         ),
       ),
     );
