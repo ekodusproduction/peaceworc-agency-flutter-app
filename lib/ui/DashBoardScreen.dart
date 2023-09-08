@@ -135,6 +135,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey[700],
                     indicatorSize: TabBarIndicatorSize.tab,
+                    isScrollable: true,
                     tabs: [
                       Tab(text: "Post",),
                       Tab(text: "Accepted",),

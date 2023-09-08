@@ -18,10 +18,10 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-          itemCount: _jobs.length,
-          itemBuilder: (context, index){
-          return PostJobCard(child: _jobs[index],);
-      })
+            itemCount: _jobs.length,
+            itemBuilder: (context, index){
+            return PostJobCard(child: _jobs[index],);
+        }),
     );
   }
 }

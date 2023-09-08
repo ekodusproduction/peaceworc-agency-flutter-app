@@ -25,6 +25,8 @@ class _JobPostScreenState extends State<JobPostScreen> {
         content: Flex(
           direction: Axis.vertical,
           children: [
+            Align(alignment: Alignment.centerLeft,child: const Text("Job Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
+            SizedBox(height: 8.0,),
             TextField(
               controller: jobTitle,
               decoration: const InputDecoration(
@@ -46,26 +48,26 @@ class _JobPostScreenState extends State<JobPostScreen> {
               height: 8,
             ),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(5)
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                     Row(
-                      children: [
-                         Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
-                         SizedBox(width: 10.0,),
-                         Text('Select Care Type', style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
-                      ],
-                    ),
-                     Icon(Icons.arrow_forward_ios, color: Colors.white,)
-                  ],
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(5)
                 ),
-              )
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
+                          SizedBox(width: 10.0,),
+                          Text('Select Care Type', style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      Icon(Icons.arrow_forward_ios, color: Colors.white,)
+                    ],
+                  ),
+                )
             ),
             const SizedBox(
               height: 8,
@@ -84,7 +86,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                         children: [
                           Icon(Icons.add_circle_outline_outlined, color: Colors.black,),
                           SizedBox(width: 10.0,),
-                          Text('Add Time & Date', style: TextStyle(color: Colors.black, fontSize: 16,fontWeight: FontWeight.bold),),
+                          Text('Add Time & Date', style: TextStyle(color: Colors.black, fontSize: 14,fontWeight: FontWeight.bold),),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Colors.black,)
@@ -111,7 +113,30 @@ class _JobPostScreenState extends State<JobPostScreen> {
                     ],
                   ),
                 )
-            )
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.search, color: Colors.grey,),
+                      SizedBox(width: 10.0,),
+                      Text('Search Address', style: TextStyle(color: Colors.grey, fontSize: 13,fontWeight: FontWeight.bold),),
+                    ],
+                  ),
+                )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         )
     ),
@@ -120,7 +145,154 @@ class _JobPostScreenState extends State<JobPostScreen> {
         isActive: _activeStepIndex >= 1,
         title: const Text(""),
         label: Text("Optional", style: TextStyle(fontSize: 12)),
-        content: const Center(child: Text('Address'),)
+        content: Flex(
+          direction: Axis.vertical,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.green[200],
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Medical history(if any)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        hintText: "ADD",
+                        contentPadding:
+                        EdgeInsets.only(left: 10.0,right: 40.0),
+                        suffixIcon: IconButton(
+                            icon: Icon(Icons.add_circle_outline_outlined),
+                          onPressed:(){
+                              print("clicked");
+                          }
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 8.0,),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.yellow[200],
+                  borderRadius: BorderRadius.circular(5)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Job experties skill(s) required", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: InputBorder.none,
+                          hintText: "ADD",
+                          contentPadding:
+                          EdgeInsets.only(left: 10.0,right: 40.0),
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.add_circle_outline_outlined),
+                              onPressed:(){
+                                print("clicked");
+                              }
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 8.0,),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.pink[200],
+                  borderRadius: BorderRadius.circular(5)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Other requirements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: InputBorder.none,
+                          hintText: "ADD",
+                          contentPadding:
+                          EdgeInsets.only(left: 10.0,right: 40.0),
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.add_circle_outline_outlined),
+                              onPressed:(){
+                                print("clicked");
+                              }
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 8.0,),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(5)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Caregiver checklist", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: InputBorder.none,
+                          hintText: "ADD",
+                          contentPadding:
+                          EdgeInsets.symmetric(),
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.add_circle_outline_outlined),
+                              onPressed:(){
+                                print("clicked");
+                              }
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
     ),
     Step(
         state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
@@ -195,7 +367,6 @@ class _JobPostScreenState extends State<JobPostScreen> {
               ),
             );
           }
-
         },
       )
     );
