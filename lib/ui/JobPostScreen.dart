@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class JobPostScreen extends StatefulWidget {
   const JobPostScreen({super.key});
@@ -12,9 +13,12 @@ class JobPostScreen extends StatefulWidget {
 class _JobPostScreenState extends State<JobPostScreen> {
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController medicalHistory = TextEditingController();
 
   int _activeStepIndex = 0;
   bool isLast = false;
+
+  final List<String> _medicalList = <String>[];
 
   List<Step> stepList() => [
      Step(
@@ -159,22 +163,61 @@ class _JobPostScreenState extends State<JobPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Medical history(if any)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
-                    SizedBox(
-                      height: 8,
+                    _medicalList.isEmpty ? SizedBox() : Container(
+                      child: ListView.builder(
+                          itemCount: _medicalList.length,
+                          itemBuilder: (context, index){
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(_medicalList[index]),
+                                    InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _medicalList.removeAt(index);
+                                          });
+                                        },
+                                        child: Text("Remove",)
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
                     ),
                     TextField(
-                      controller: email,
+                      controller: medicalHistory,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
                         border: InputBorder.none,
                         hintText: "ADD",
                         contentPadding:
-                        EdgeInsets.only(left: 10.0,right: 40.0),
+                        EdgeInsets.only(left: 10.0,right: 40.0, top: 10.0, bottom: 10.0),
                         suffixIcon: IconButton(
                             icon: Icon(Icons.add_circle_outline_outlined),
                           onPressed:(){
-                              print("clicked");
+                              setState(() {
+                                if(medicalHistory.text.isNotEmpty){
+                                  _medicalList.add(medicalHistory.text);
+                                  medicalHistory.clear();
+                                }else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Please enter something.'),
+                                      )
+                                  );
+                                }
+                              });
+
+                              print(_medicalList);
                           }
                         )
                       ),
@@ -206,7 +249,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                           border: InputBorder.none,
                           hintText: "ADD",
                           contentPadding:
-                          EdgeInsets.only(left: 10.0,right: 40.0),
+                          EdgeInsets.only(left: 10.0,right: 40.0, top: 10.0, bottom: 10.0),
                           suffixIcon: IconButton(
                               icon: Icon(Icons.add_circle_outline_outlined),
                               onPressed:(){
@@ -242,7 +285,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                           border: InputBorder.none,
                           hintText: "ADD",
                           contentPadding:
-                          EdgeInsets.only(left: 10.0,right: 40.0),
+                          EdgeInsets.only(left: 10.0,right: 40.0, top: 10.0, bottom: 10.0),
                           suffixIcon: IconButton(
                               icon: Icon(Icons.add_circle_outline_outlined),
                               onPressed:(){
@@ -278,7 +321,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                           border: InputBorder.none,
                           hintText: "ADD",
                           contentPadding:
-                          EdgeInsets.symmetric(),
+                          EdgeInsets.only(left: 10.0,right: 40.0, top: 10.0, bottom: 10.0),
                           suffixIcon: IconButton(
                               icon: Icon(Icons.add_circle_outline_outlined),
                               onPressed:(){
