@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/accepted_jobs/AccptedJobsScreen.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobListScreen.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -70,8 +71,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               padding: const EdgeInsets.only(top: 10, bottom: 10.0),
                               child: Column(
                                 children: [
-                                  Text("134", style: TextStyle(color: Colors.white),),
-                                  Text("Hello world", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.0),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.show_chart, size: 12, color: Colors.white,),
+                                      Text("6", style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
+                                  Text("Job posted", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.0),),
                                 ],
                               ),
                             ),
@@ -88,8 +95,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               padding: const EdgeInsets.only(top: 10, bottom: 10.0),
                               child: Column(
                                 children: [
-                                  Text("134", style: TextStyle(color: Colors.white),),
-                                  Text("Hello world", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.0),),
+                                Text("276", style: TextStyle(color: Colors.white),),
+                                  Text("Investments", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.0),),
                                 ],
                               ),
                             ),
@@ -106,7 +113,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               padding: const EdgeInsets.only(top: 10, bottom: 10.0),
                               child: Column(
                                 children: [
-                                  Text("134", style: TextStyle(color: Colors.white),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.star_border_outlined, size: 12, color: Colors.white,),
+                                      Text("2", style: TextStyle(color: Colors.white),),
+                                    ],
+                                  ),
                                   Text("Hello world", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.0),),
                                 ],
                               ),
@@ -148,7 +161,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     child:  TabBarView(
                       children: [
                         PostJobListScreen(),
-                        Icon(Icons.directions_transit, size: 350),
+                        AcceptedJobsScreen(),
                         Icon(Icons.directions_car, size: 350),
                         Icon(Icons.child_friendly_sharp, size: 350),
                       ],

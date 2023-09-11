@@ -19,21 +19,21 @@ class _JobPostScreenState extends State<JobPostScreen> {
 
   List<Step> stepList() => [
      Step(
-        state: _activeStepIndex <= 0 ? StepState.editing : StepState.complete,
+        state: _activeStepIndex <= 0 ? StepState.indexed : StepState.complete,
         isActive: _activeStepIndex >= 0,
         title: const Text(""),
         label: Text("Mandatory", style: TextStyle(fontSize: 12),),
         content: MandatoryScreen()
     ),
     Step(
-        state: _activeStepIndex <= 1 ? StepState.editing : StepState.complete,
+        state: _activeStepIndex <= 1 ? StepState.indexed : StepState.complete,
         isActive: _activeStepIndex >= 1,
         title: const Text(""),
         label: Text("Optional", style: TextStyle(fontSize: 12)),
         content: OptionalScreen()
     ),
     Step(
-        state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
+        state: _activeStepIndex <= 2 ? StepState.indexed : StepState.complete,
         isActive: _activeStepIndex >= 2,
         title: const Text(""),
         label: Text("Preview", style: TextStyle(fontSize: 12)),

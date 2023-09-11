@@ -125,31 +125,34 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
             )
         ),
         SizedBox(height: 8,),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[300],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("San Francisco", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
-                Text("german streen 5679, #234-900, North Point Streen, San Francisco ,usa", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                Divider(
-                  thickness: 0.5,
-                  color: Colors.grey[600],
-                ),
-                Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                Text("900, North Point Streen", style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
-                SizedBox(height: 4,),
-                Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                Text("123 building, 19 floor", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                SizedBox(height: 4,),
-              ],
+        Visibility(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[300],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("San Francisco", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
+                  Text("german streen 5679, #234-900, North Point Streen, San Francisco ,usa", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Divider(
+                    thickness: 0.5,
+                    color: Colors.grey[600],
+                  ),
+                  Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text("900, North Point Streen", style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 4,),
+                  Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text("123 building, 19 floor", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  SizedBox(height: 4,),
+                ],
+              ),
             ),
           ),
+          visible: false,
         ),
         const SizedBox(
           height: 20,
