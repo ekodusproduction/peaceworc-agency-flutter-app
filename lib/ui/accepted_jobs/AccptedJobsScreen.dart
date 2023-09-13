@@ -43,7 +43,7 @@ class _AcceptedJobsScreenState extends State<AcceptedJobsScreen> {
                 scrollDirection: Axis.horizontal,
                 itemCount: _jobs.length.toInt(),
                 itemBuilder: (context, index){
-                  return UpcommingJobCard(child: _jobs[index]);
+                  return UpcommingJobCard(title: _jobs[index]);
                 }),
           ),
         ],
