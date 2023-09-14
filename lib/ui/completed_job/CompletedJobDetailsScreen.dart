@@ -20,7 +20,7 @@ class _CompletedJobDetailsScreenState extends State<CompletedJobDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Post Job Details", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),),
+        title: Text("Complete Job Details", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),),
       ),
       floatingActionButton: Wrap( //will break to another line on overflow
         direction: Axis.vertical, //use vertical to show  on vertical axis

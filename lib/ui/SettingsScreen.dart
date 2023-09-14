@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/authorized_officer/authorize_officer_list_screen.dart';
+import 'package:peaceworc_agency/ui/change_pass/change_password_screen.dart';
+import 'package:peaceworc_agency/ui/client_management/client_list_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -55,97 +58,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SizedBox(height: 10,),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.lock_outline, color: Colors.black, size: 20,),
-                          SizedBox(width: 10,),
-                          Text("Change Password", style: TextStyle(fontSize: 15),)
-                        ],
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
-                    ],
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.lock_outline, color: Colors.black, size: 20,),
+                            SizedBox(width: 10,),
+                            Text("Change Password", style: TextStyle(fontSize: 15),)
+                          ],
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
+                      ],
+                    ),
                   ),
                 ),
               ),
 
               SizedBox(height: 10,),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5)
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthorizeOfficerListScreen()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.person_outline, color: Colors.black, size: 20,),
+                            SizedBox(width: 10,),
+                            Text("Authorizes Officer", style: TextStyle(fontSize: 15),)
+                          ],
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.person_outline, color: Colors.black, size: 20,),
-                          SizedBox(width: 10,),
-                          Text("Authorizes Officer", style: TextStyle(fontSize: 15),)
-                        ],
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
-                    ],
+              ),
+              SizedBox(height: 10,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClientManagementListScreen()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.people_alt_outlined, color: Colors.black, size: 20,),
+                            SizedBox(width: 10,),
+                            Text("Client Management", style: TextStyle(fontSize: 15),)
+                          ],
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
+                      ],
+                    ),
                   ),
                 ),
               ),
 
               SizedBox(height: 10,),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.people_alt_outlined, color: Colors.black, size: 20,),
-                          SizedBox(width: 10,),
-                          Text("Client Management", style: TextStyle(fontSize: 15),)
-                        ],
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
-                    ],
+              GestureDetector(
+                onTap: (){
+                  _showMyDialog();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(5)
                   ),
-                ),
-              ),
-
-              SizedBox(height: 10,),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.logout_outlined, color: Colors.black, size: 20,),
-                          SizedBox(width: 10,),
-                          Text("Logout", style: TextStyle(fontSize: 15),)
-                        ],
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.logout_outlined, color: Colors.black, size: 20,),
+                            SizedBox(width: 10,),
+                            Text("Logout", style: TextStyle(fontSize: 15),)
+                          ],
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, color: Colors.black,),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -153,6 +175,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout !'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Do you want to exit the app?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+          insetPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          //icon: Icon(Icons.logout_outlined, color: Colors.black, size: 24,),
+        );
+      },
     );
   }
 }

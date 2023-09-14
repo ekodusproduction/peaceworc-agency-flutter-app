@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:peaceworc_agency/ui/completed_job/CompletedJobDetailsScreen.dart';
-class CompletedJobCard extends StatelessWidget {
+import 'package:peaceworc_agency/ui/in_complete_job/InCompleteJobDetailsScreen.dart';
+class InCompleteJobCard extends StatelessWidget {
   final String title;
-  const CompletedJobCard({required this.title});
+  const InCompleteJobCard({required this.title});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedJobDetailsScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => InCompleteJobDetailsScreen()));
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0),
@@ -36,13 +36,13 @@ class CompletedJobCard extends StatelessWidget {
                       Container(
                           width: 90,
                           decoration: BoxDecoration(
-                              color: Colors.green[400],
+                              color: Colors.red[400],
                               borderRadius: BorderRadius.only(topLeft: Radius.circular(100), bottomLeft: Radius.circular(100))
                           ),
                           child: SizedBox(width:10, child: Padding(
                             padding: const EdgeInsets.only(right: 10.0, left: 10.0, top: 1.0, bottom: 1.0),
                             child: Text(
-                              "Completed Job",
+                              "InCompleted Job",
                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                             ),
                           ))
@@ -91,7 +91,7 @@ class CompletedJobCard extends StatelessWidget {
                       ),
                       SizedBox(height: 10,),
                       Align(
-                        alignment: Alignment.centerLeft,
+                          alignment: Alignment.centerLeft,
                           child: Text("\u002423", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[500]),)),
                       SizedBox(height: 10,),
                     ],
@@ -105,4 +105,3 @@ class CompletedJobCard extends StatelessWidget {
     );
   }
 }
-

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/accepted_jobs/AccptedJobsScreen.dart';
 import 'package:peaceworc_agency/ui/completed_job/CompletedJobDetailsScreen.dart';
 import 'package:peaceworc_agency/ui/completed_job/CompletedJobListScreen.dart';
+import 'package:peaceworc_agency/ui/in_complete_job/InCompleteJobListScreen.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobListScreen.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -165,7 +166,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         PostJobListScreen(),
                         AcceptedJobsScreen(),
                         CompletedJobListScreen(),
-                        Icon(Icons.child_friendly_sharp, size: 350),
+                        InCompleteJobListScreen(),
                       ],
                     ),
                 )
