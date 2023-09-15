@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
 
@@ -107,22 +108,27 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
         const SizedBox(
           height: 8,
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(5)
-            ),
-            child: const Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Icons.search, color: Colors.grey,),
-                  SizedBox(width: 10.0,),
-                  Text('Search Address', style: TextStyle(color: Colors.grey, fontSize: 13,fontWeight: FontWeight.bold),),
-                ],
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchLocationScreen()));
+          },
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(5)
               ),
-            )
+              child: const Padding(
+                padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.search, color: Colors.grey,),
+                    SizedBox(width: 10.0,),
+                    Text('Search Address', style: TextStyle(color: Colors.grey, fontSize: 13,fontWeight: FontWeight.bold),),
+                  ],
+                ),
+              )
+          ),
         ),
         SizedBox(height: 8,),
         Visibility(

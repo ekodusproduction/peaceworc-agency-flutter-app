@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/authorized_officer/add_auth_officer_screen.dart';
 import 'package:peaceworc_agency/ui/authorized_officer/authorize_officer_card.dart';
 class AuthorizeOfficerListScreen extends StatefulWidget {
   const AuthorizeOfficerListScreen({super.key});
@@ -41,16 +42,7 @@ class _AuthorizeOfficerListScreenState extends State<AuthorizeOfficerListScreen>
                 ),
               ),
               onPressed: () {
-                final snackBar = SnackBar(
-                  content: const Text('Added successfully!'),
-                  action: SnackBarAction(
-                    label: 'ok',
-                    onPressed: () {
-                      // Some code to undo the change.
-                    },
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddAuthOfficerScreen()));
               },
               child: const Text(
                 'Add Authorize Officer',
