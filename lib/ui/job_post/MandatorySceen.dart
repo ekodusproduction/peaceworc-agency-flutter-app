@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
@@ -10,6 +11,10 @@ class MandatoryScreen extends StatefulWidget {
 class _MandatoryScreenState extends State<MandatoryScreen> {
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
+  bool isAddressAvail = false;
+  String street = "";
+  String description = "";
+  String apartment = "";
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +115,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
         ),
         GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchLocationScreen()));
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchLocationScreen()));
+            _navigateToSearchLocation(context);
           },
           child: Container(
               decoration: BoxDecoration(
@@ -143,22 +149,22 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("San Francisco", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
-                  Text("german streen 5679, #234-900, North Point Streen, San Francisco ,usa", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Divider(
                     thickness: 0.5,
                     color: Colors.grey[600],
                   ),
                   Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                  Text("900, North Point Streen", style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                  Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                   SizedBox(height: 4,),
                   Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                  Text("123 building, 19 floor", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text(apartment, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   SizedBox(height: 4,),
                 ],
               ),
             ),
           ),
-          visible: false,
+          visible: isAddressAvail,
         ),
         const SizedBox(
           height: 20,
@@ -166,4 +172,30 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
       ],
     );
   }
+
+
+
+  Future<void> _navigateToSearchLocation(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SearchLocationScreen()),
+    ) as Data;
+
+    if (!mounted) return;
+    setState(() {
+      isAddressAvail = true;
+    });
+    street = result.street!;
+    description = result.description!;
+  }
+
+}
+
+
+class Data {
+  String? lat;
+  String? long;
+  String? street;
+  String? description;
+  Data({this.lat, this.long, this.street, this.description});
 }

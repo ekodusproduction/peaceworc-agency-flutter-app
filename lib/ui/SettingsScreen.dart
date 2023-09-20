@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/authorized_officer/authorize_officer_list_screen.dart';
 import 'package:peaceworc_agency/ui/change_pass/change_password_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/client_list_screen.dart';
+import 'package:peaceworc_agency/ui/components/logout_dialoge.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -144,9 +145,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               SizedBox(height: 10,),
-              GestureDetector(
+              InkWell(
                 onTap: (){
-                  _showMyDialog();
+                  //_showMyDialog();
+                  _showAlertDialog();
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -209,6 +211,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           insetPadding: EdgeInsets.symmetric(horizontal: 10.0),
           //icon: Icon(Icons.logout_outlined, color: Colors.black, size: 24,),
         );
+      },
+    );
+  }
+
+
+  Future<void> _showAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return Logout(onNoTap: (){
+
+          Navigator.of(context).pop();
+
+        }, onYesTap: (){
+          Navigator.of(context).pop();
+        },);
       },
     );
   }
