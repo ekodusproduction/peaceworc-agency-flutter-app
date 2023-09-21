@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
@@ -15,6 +16,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
   String street = "";
   String description = "";
   String apartment = "";
+  String place = "";
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +150,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("San Francisco", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
+                  Text(place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
                   Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Divider(
                     thickness: 0.5,
@@ -174,7 +176,6 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
   }
 
 
-
   Future<void> _navigateToSearchLocation(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -187,15 +188,26 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
     });
     street = result.street!;
     description = result.description!;
+    place = result.place!;
+
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      builder: (BuildContext context) {
+        return const AddressBottomSheet();
+      },
+    );
   }
-
 }
-
 
 class Data {
   String? lat;
   String? long;
   String? street;
   String? description;
-  Data({this.lat, this.long, this.street, this.description});
+  String? city;
+  String? state;
+  String? place;
+  Data({this.lat, this.long, this.street, this.description, this.city, this.state, this.place});
 }

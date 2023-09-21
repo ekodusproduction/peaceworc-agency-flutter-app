@@ -169,8 +169,11 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
           final data = Data(
               lat : prediction.lat.toString(),
               long: prediction.lng.toString(),
-              street: prediction.structuredFormatting!.mainText.toString(),
-              description: prediction.description.toString()
+              street: prediction.structuredFormatting?.mainText.toString() ?? "No Data",
+              description: prediction.description.toString(),
+              city: prediction.terms?[2].value.toString(),
+              state: prediction.terms?[3].value.toString(),
+              place: prediction.terms?[1].value.toString(),
           );
           Navigator.pop(context, data);
           //Navigator.of(context).pop();
@@ -180,9 +183,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
           controller.text = prediction.description ?? "";
           controller.selection = TextSelection.fromPosition(
               TextPosition(offset: prediction.description?.length ?? 0));
-              //Navigator.pop(context, data);
-          //Navigator.of(context).pop();
-
         },
         seperatedBuilder: Divider(),
         // OPTIONAL// If you want to customize list view item builder
