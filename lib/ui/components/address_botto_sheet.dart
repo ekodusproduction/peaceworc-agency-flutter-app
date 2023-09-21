@@ -1,27 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 
 class AddressBottomSheet extends StatefulWidget {
-  const AddressBottomSheet({super.key});
+  final String? street;
+  final String? city;
+  final String? state;
+  final String? zipcode;
+  AddressBottomSheet({this.street, this.city, this.state, this.zipcode});
   @override
   State<AddressBottomSheet> createState() => _AddressBottomSheetState();
 }
 
 class _AddressBottomSheetState extends State<AddressBottomSheet> {
+  TextEditingController streetController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController zipcodeController = TextEditingController();
+  TextEditingController apartmentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    streetController.text = widget.street.toString();
+    cityController.text = widget.city.toString();
+    stateController.text = widget.state.toString();
+    zipcodeController.text = widget.zipcode.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Icon(Icons.clear, color: Colors.black,),
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context, false);
+                },
+                  child: Icon(Icons.clear, color: Colors.black,)
+              ),
               const SizedBox(
                 height: 8,
               ),
               TextField(
+                controller: streetController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Street name/number',
@@ -31,6 +57,7 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
                 height: 8,
               ),
               TextField(
+                controller: cityController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'City',
@@ -39,53 +66,60 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
               const SizedBox(
                 height: 8,
               ),
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'State',
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: stateController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'State',
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 5,),
+                  Expanded(
+                    child: TextField(
+                      controller: zipcodeController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Zipcode',
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 8,
               ),
               TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Zipcode',
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              TextField(
+                controller: apartmentController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Apartment name/number(optional)',
                 ),
               ),
               const SizedBox(
-                height: 8,
+                height: 30,
               ),
-              TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Floor number(optional)',
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: TextButton(
-                    onPressed: (){},
-                    child: const Text('Save Address', style: TextStyle(color: Colors.white),),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pop(context, true);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: TextButton(
+                      onPressed: (){
+                        Navigator.pop(context, true);
+                      },
+                      child: const Text('Save Address', style: TextStyle(color: Colors.white),),
+                    ),
                   ),
                 ),
               )

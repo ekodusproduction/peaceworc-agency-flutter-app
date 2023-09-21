@@ -4,7 +4,6 @@ import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
-
   @override
   State<MandatoryScreen> createState() => _MandatoryScreenState();
 }
@@ -13,10 +12,12 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
   bool isAddressAvail = false;
+
   String street = "";
   String description = "";
-  String apartment = "";
   String place = "";
+  String city = "";
+  String state = "";
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +161,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
                   Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                   SizedBox(height: 4,),
                   Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                  Text(apartment, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text("", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   SizedBox(height: 4,),
                 ],
               ),
@@ -183,21 +184,30 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
     ) as Data;
 
     if (!mounted) return;
-    setState(() {
-      isAddressAvail = true;
-    });
+
     street = result.street!;
     description = result.description!;
     place = result.place!;
+    city = result.city!;
+    state = result.state!;
 
-    showModalBottomSheet<void>(
+    _navigateToBottomSheet(context, street, city, state);
+  }
+
+
+  Future<void> _navigateToBottomSheet(BuildContext context, String _street, String _city, String _state) async {
+    final result = await showModalBottomSheet<void>(
       isScrollControlled: true,
       useSafeArea: true,
       context: context,
       builder: (BuildContext context) {
-        return const AddressBottomSheet();
+        return AddressBottomSheet(street: _street, city: _city, state: _state, zipcode: "12345",);
       },
-    );
+    ) as bool;
+
+    setState(() {
+      isAddressAvail = result;
+    });
   }
 }
 
