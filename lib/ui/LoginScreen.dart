@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/bloc/login_bloc.dart';
 import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/SignUpScreen.dart';
 
@@ -10,6 +15,69 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var fcmToken = "fcm_token";
+  //late FirebaseMessaging _firebaseMessaging;
+
+  @override
+  void initState() {
+    super.initState();
+    addLoginListener();
+    /*Firebase.initializeApp().whenComplete(() => {
+      _firebaseMessaging = FirebaseMessaging.instance
+    });*/
+
+    //firebaseCloudMessaging_Listeners();
+
+  }
+  /*void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token){
+      print(token);
+      fcmToken = token ?? "fcm_token";
+      print(token);
+    });
+  }*/
+
+/*
+  Future iOS_Permission() async {
+    if (Platform.isIOS) {
+      _firebaseMessaging.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+    }
+  }
+*/
+
+  void login(String email, String password, String fcmToken){
+    loginBloc.login(email, password, fcmToken);
+  }
+  void addLoginListener() {
+    loginBloc.subject.stream.listen((value) {
+      if(value.error == null){
+        if (value.success == true) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextField(
+                        controller: emailController,
                         style: TextStyle(color: Colors.white),
                         obscureText: false,
                         decoration: InputDecoration(
@@ -58,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 10,),
                       TextField(
+                        controller: passwordController,
                         style: TextStyle(color: Colors.white),
                         obscureText: true,
                         decoration: InputDecoration(
@@ -96,8 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                       ),
                       onPressed: () => {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
-                  }
+                        login(emailController.text, passwordController.text, fcmToken)
+                      }
                   ),
                 ),
                 SizedBox(height: 30,),
