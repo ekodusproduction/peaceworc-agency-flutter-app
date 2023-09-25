@@ -28,7 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       isLoading = true;
     });
-    logoutBloc.logout(token);
+    logoutBloc.logout("token");
   }
 
   void addLogoutListener() {
@@ -271,7 +271,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return Logout(onNoTap: (){
           Navigator.of(context).pop();
         }, onYesTap: () async{
-          _prefs.then((SharedPreferences prefs) {
+          await _prefs.then((SharedPreferences prefs) {
             logout(prefs.getString("auth_token")!);
           });
           }
