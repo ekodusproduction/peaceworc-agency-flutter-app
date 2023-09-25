@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/login_bloc.dart';
 import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/SignUpScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,44 +22,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin{
   bool isLoading = false;
   bool isObscured = true;
   final formGlobalKey = GlobalKey < FormState > ();
-  //late FirebaseMessaging _firebaseMessaging;
 
   @override
   void initState() {
     super.initState();
     addLoginListener();
-    /*Firebase.initializeApp().whenComplete(() => {
-      _firebaseMessaging = FirebaseMessaging.instance
-    });*/
-
-    //firebaseCloudMessaging_Listeners();
-
   }
-  /*void firebaseCloudMessaging_Listeners() {
-    if (Platform.isIOS) iOS_Permission();
-
-    _firebaseMessaging.getToken().then((token){
-      print(token);
-      fcmToken = token ?? "fcm_token";
-      print(token);
-    });
-  }*/
-
-/*
-  Future iOS_Permission() async {
-    if (Platform.isIOS) {
-      _firebaseMessaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-    }
-  }
-*/
 
   void login(String email, String password, String fcmToken){
     setState(() {
@@ -67,13 +36,21 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin{
     loginBloc.login(email, password, fcmToken);
   }
   void addLoginListener() {
-    loginBloc.subject.stream.listen((value) {
+    loginBloc.subject.stream.listen((value) async {
       setState(() {
         isLoading = false;
       });
       if(value.error == null){
         if (value.success == true) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+          final prefs = await SharedPreferences.getInstance();
+          setState((){
+            prefs.setBool('isLoggedIn', true);
+            prefs.setString("full_name", value.data!.name.toString());
+            prefs.setString("auth_token", value.token.toString());
+            prefs.setString("user_id", value.data!.id.toString());
+          });
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),

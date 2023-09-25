@@ -16,4 +16,5 @@ class ApiLinks{
 
   //Api routes
   static const String login = 'login';
+  static const String logout = 'logout';
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/bloc/logout_bloc.dart';
+import 'package:peaceworc_agency/ui/LoginScreen.dart';
 import 'package:peaceworc_agency/ui/authorized_officer/authorize_officer_list_screen.dart';
 import 'package:peaceworc_agency/ui/change_pass/change_password_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/client_list_screen.dart';
 import 'package:peaceworc_agency/ui/components/logout_dialoge.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,6 +15,43 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  bool isLoading = false;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  @override
+  void initState() {
+    addLogoutListener();
+    super.initState();
+  }
+
+  void logout(String token){
+    setState(() {
+      isLoading = true;
+    });
+    logoutBloc.logout(token);
+  }
+
+  void addLogoutListener() {
+    logoutBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          _clearData();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -215,6 +255,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<void> _clearData() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    Navigator.of(context).pop();
+    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => const LoginScreen()),(route) => false);
+  }
+
 
   Future<void> _showAlertDialog() async {
     return showDialog<void>(
@@ -222,12 +269,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return Logout(onNoTap: (){
-
           Navigator.of(context).pop();
-
-        }, onYesTap: (){
-          Navigator.of(context).pop();
-        },);
+        }, onYesTap: () async{
+          _prefs.then((SharedPreferences prefs) {
+            logout(prefs.getString("auth_token")!);
+          });
+          }
+        );
       },
     );
   }
