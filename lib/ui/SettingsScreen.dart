@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              Text("Settings", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
+              Text("Setting", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
               SizedBox(height: 10,),
               Container(
                 decoration: BoxDecoration(
