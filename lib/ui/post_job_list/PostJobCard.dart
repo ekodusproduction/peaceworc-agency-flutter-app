@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/model/post_job/get_post_job_response.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
 
 class PostJobCard extends StatelessWidget {
-  final String child;
-  PostJobCard({required this.child});
+  final Datum data;
+  PostJobCard({required this.data});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -28,7 +29,7 @@ class PostJobCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(child: Text(
-                          child,
+                          data.title!,
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13.0),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
