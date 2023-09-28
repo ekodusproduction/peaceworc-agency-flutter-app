@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/get_post_job_bloc.dart';
 import 'package:peaceworc_agency/model/post_job/get_post_job_response.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobCard.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PostJobListScreen extends StatefulWidget {
   const PostJobListScreen({super.key});
@@ -15,18 +17,19 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
 
   @override
   void initState() {
-    getJobListener();
     getJob();
+    getJobListener();
     super.initState();
   }
 
   void getJob(){
-    setState(() {
-      isLoading = true;
-    });
+
     getPostJobBloc.getJob('0','1');
   }
   void getJobListener() {
+    setState(() {
+      isLoading = true;
+    });
     getPostJobBloc.subject.stream.listen((value) async {
       setState(() {
         isLoading = false;
@@ -52,22 +55,55 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<GetPostJobResponse>(
-        stream: getPostJobBloc.subject.stream,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-            print("snapshot error => ${snapshot.error}");
-            return ListView.builder(
-                itemCount: snapshot.data!.data!.data!.length,
-                itemBuilder: (context, index){
-                  Datum _data = snapshot.data!.data!.data![index];
-                  return PostJobCard(data: _data,);
-                });
-          }else{
-            return _noDataLay();
-          }
-        },
-      ),
+      body:SingleChildScrollView(
+        child: isLoading ? Column(
+          children: [
+            SizedBox(height: 8,),
+            loadingCard(),
+            loadingCard(),
+            loadingCard(),
+          ],
+        ) : Column(
+          children: [
+            StreamBuilder<GetPostJobResponse>(
+              stream: getPostJobBloc.subject.stream,
+              builder: (context, snapshot){
+                if(snapshot.hasData){
+                  print("snapshot error => ${snapshot.error}");
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.data!.data!.length,
+                      itemBuilder: (context, index){
+                        Datum _data = snapshot.data!.data!.data![index];
+                        return PostJobCard(data: _data,);
+                      });
+                }else{
+                  return _noDataLay();
+                }
+              },
+            ),
+          ],
+        )
+      )
+    );
+  }
+
+  Shimmer loadingCard(){
+    return Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Expanded(
+            child: Container(
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8)
+              ),
+            ),
+          ),
+        ),
     );
   }
 
