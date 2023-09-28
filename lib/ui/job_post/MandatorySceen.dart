@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
+import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
@@ -8,7 +9,7 @@ class MandatoryScreen extends StatefulWidget {
   State<MandatoryScreen> createState() => _MandatoryScreenState();
 }
 
-class _MandatoryScreenState extends State<MandatoryScreen> {
+class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
   bool isAddressAvail = false;
@@ -26,47 +27,66 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
       children: [
         Align(alignment: Alignment.centerLeft,child: const Text("Job Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
         SizedBox(height: 8.0,),
-        TextField(
+        TextFormField(
           controller: jobTitle,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job Title',
           ),
+          validator: (String? value) {
+            if(isTitleValidate(value!).length != 0){
+              return isTitleValidate(value!);
+            }
+            return null;
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         const SizedBox(
           height: 8,
         ),
-        TextField(
+        TextFormField(
           controller: email,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job description & responsibilities',
           ),
+          validator: (String? value) {
+            if(isDescValidate(value!).length != 0){
+              return isDescValidate(value!);
+            }
+            return null;
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         const SizedBox(
           height: 8,
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(5)
-            ),
-            child: const Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
-                      SizedBox(width: 10.0,),
-                      Text('Select Care Type', style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                  Icon(Icons.arrow_forward_ios, color: Colors.white,)
-                ],
+        GestureDetector(
+          onTap: (){
+            _navigateToTypeOfCare();
+          },
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(5)
               ),
-            )
+              child: const Padding(
+                padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
+                        SizedBox(width: 10.0,),
+                        Text('Select Care Type', style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                    Icon(Icons.arrow_forward_ios, color: Colors.white,)
+                  ],
+                ),
+              )
+          ),
         ),
         const SizedBox(
           height: 8,
@@ -194,6 +214,16 @@ class _MandatoryScreenState extends State<MandatoryScreen> {
     _navigateToBottomSheet(context, street, city, state);
   }
 
+  Future<void> _navigateToTypeOfCare() async {
+   await showModalBottomSheet<void>(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      builder: (BuildContext context) {
+        return TypeOfCareBottomSheet();
+      },
+    ) as bool;
+  }
 
   Future<void> _navigateToBottomSheet(BuildContext context, String _street, String _city, String _state) async {
     final result = await showModalBottomSheet<void>(
@@ -220,4 +250,19 @@ class Data {
   String? state;
   String? place;
   Data({this.lat, this.long, this.street, this.description, this.city, this.state, this.place});
+}
+
+mixin jobMendatoryValidationMixin{
+  String isTitleValidate(String value){
+    if(value.isEmpty){
+      return "Name is required";
+    }
+    return "";
+  }
+  String isDescValidate(String value){
+    if(value.isEmpty){
+      return "Job description is required";
+    }
+    return "";
+  }
 }
