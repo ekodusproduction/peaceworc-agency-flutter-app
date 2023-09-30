@@ -6,9 +6,10 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:peaceworc_agency/helper/constants.dart';
 import 'package:peaceworc_agency/ui/components/location_list_tile.dart';
-import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+
+import '../job_post/data_classes.dart';
 
 class SearchLocationScreen extends StatefulWidget {
   const SearchLocationScreen({super.key});
@@ -102,7 +103,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
     );
   }
 
-
   placeApiWidgetOne(){
     return Column(
       children: [
@@ -176,7 +176,6 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               place: prediction.terms?[1].value.toString(),
           );
           Navigator.pop(context, data);
-          //Navigator.of(context).pop();
         },
 
         itemClick: (Prediction prediction) {

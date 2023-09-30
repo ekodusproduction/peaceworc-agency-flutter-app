@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
+import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
+import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
@@ -13,12 +15,15 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
   bool isAddressAvail = false;
+  bool? isClientDetailsVisible = false;
 
   String street = "";
   String description = "";
   String place = "";
   String city = "";
   String state = "";
+  String? careType = "";
+  String careTypeTxt = "Select Care Type";
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +68,14 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         ),
         GestureDetector(
           onTap: (){
-            _navigateToTypeOfCare();
+            _navigateToTypeOfCare(context);
           },
           child: Container(
               decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(5)
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,13 +84,53 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                       children: [
                         Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
                         SizedBox(width: 10.0,),
-                        Text('Select Care Type', style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                        Text(careTypeTxt, style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
                       ],
                     ),
                     Icon(Icons.arrow_forward_ios, color: Colors.white,)
                   ],
                 ),
               )
+          ),
+        ),
+        Visibility(
+          visible: isClientDetailsVisible!,
+          child: const SizedBox(
+            height: 8,
+          ),
+        ),
+        Visibility(
+          visible: isClientDetailsVisible!,
+          child: GestureDetector(
+            onTap: (){
+              showDialog(context: context,
+                  builder: (BuildContext context){
+                    return ClientSelectDialoge();
+                  }
+              );
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
+                          SizedBox(width: 10.0,),
+                          Text('Add Client Details', style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      Icon(Icons.arrow_forward_ios, color: Colors.white,)
+                    ],
+                  ),
+                )
+            ),
           ),
         ),
         const SizedBox(
@@ -196,7 +241,6 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     );
   }
 
-
   Future<void> _navigateToSearchLocation(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -214,15 +258,29 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     _navigateToBottomSheet(context, street, city, state);
   }
 
-  Future<void> _navigateToTypeOfCare() async {
-   await showModalBottomSheet<void>(
+  Future<void> _navigateToTypeOfCare(BuildContext context) async {
+    final result = await showModalBottomSheet<void>(
       isScrollControlled: true,
       useSafeArea: true,
       context: context,
       builder: (BuildContext context) {
         return TypeOfCareBottomSheet();
       },
-    ) as bool;
+    ) as CareTypeData?;
+
+    setState(() {
+      careType = result?.careType;
+      if(result?.isClientVisible != null){
+        isClientDetailsVisible = result?.isClientVisible;
+      }else{
+        isClientDetailsVisible = false;
+      }
+      if(careType != null){
+        if(careType!.isNotEmpty){
+          careTypeTxt = careType!;
+        }
+      }
+    });
   }
 
   Future<void> _navigateToBottomSheet(BuildContext context, String _street, String _city, String _state) async {
@@ -234,22 +292,10 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         return AddressBottomSheet(street: _street, city: _city, state: _state, zipcode: "12345",);
       },
     ) as bool;
-
     setState(() {
       isAddressAvail = result;
     });
   }
-}
-
-class Data {
-  String? lat;
-  String? long;
-  String? street;
-  String? description;
-  String? city;
-  String? state;
-  String? place;
-  Data({this.lat, this.long, this.street, this.description, this.city, this.state, this.place});
 }
 
 mixin jobMendatoryValidationMixin{

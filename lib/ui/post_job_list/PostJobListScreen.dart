@@ -23,7 +23,6 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
   }
 
   void getJob(){
-
     getPostJobBloc.getJob('0','1');
   }
   void getJobListener() {
