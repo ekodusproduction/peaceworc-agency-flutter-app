@@ -134,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin{
                                       : Icons.visibility_off),
                               color: Colors.white,
                               onPressed: () {
-
                                 setState(
                                       () {
                                         isObscured = !isObscured;
@@ -229,6 +228,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin{
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    loginBloc.dispose();
+    super.dispose();
   }
 }
 
