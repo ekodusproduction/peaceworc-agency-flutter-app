@@ -259,7 +259,6 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
               ),
             ),
           ),
-
         ],
       )
     );
