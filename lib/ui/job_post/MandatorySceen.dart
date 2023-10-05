@@ -15,6 +15,8 @@ class MandatoryScreen extends StatefulWidget {
 class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
   TextEditingController jobTitle = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController remittance = TextEditingController();
+
   bool isAddressAvail = false;
   bool? isClientDetailsVisible = false;
   bool isDateTimeAvailable = false;
@@ -193,22 +195,28 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         const SizedBox(
           height: 8,
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(5)
+        TextFormField(
+          controller: remittance,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+            hintText: 'Remittance',
+            fillColor: Colors.grey.shade300,
+            filled: true,
+            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            prefixIcon: Icon(Icons.attach_money_outlined, color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300, width: 3.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
-            child: const Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Icons.monetization_on_outlined, color: Colors.black,),
-                  SizedBox(width: 10.0,),
-                  Text('Remittance', style: TextStyle(color: Colors.black, fontSize: 16,fontWeight: FontWeight.bold),),
-                ],
-              ),
-            )
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          ),
+          maxLines: 1,
+          validator: (String? value) {
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
         const SizedBox(
           height: 8,
