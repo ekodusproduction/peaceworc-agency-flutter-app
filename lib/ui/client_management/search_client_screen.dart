@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/search_client_bloc.dart';
 import 'package:peaceworc_agency/model/search_client/search_client_response.dart';
@@ -53,26 +54,51 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
         appBar: AppBar(
           title: Text("Search Client", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15.0),),
         ),
-        body: Column(
-          children: [
-            StreamBuilder<SearchClientResponse>(
-              stream: searchClientBloc.subject.stream,
-              builder: (context, snapshot){
-                if(snapshot.hasData){
-                  print("snapshot error => ${snapshot.error}");
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.data!.length,
-                      itemBuilder: (context, index){
-                        Data _data = snapshot.data!.data![index];
-                        return SearchClientCard(title: _data.name!,);
-                      });
-                }else{
-                  return _noDataLay();
-                }
-              },
-            ),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+                    border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.black), //<-- SEE HERE
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    hintText: "Search client name..."
+                  ),
+                  maxLines: 1,
+                  onChanged: (String? value){
+                    EasyDebounce.debounce('debouncer1', Duration(milliseconds: 200),
+                            () => searchClientBloc.searchClient(value!)
+                    );
+                  },
+                ),
+              ),
+              StreamBuilder<SearchClientResponse>(
+                stream: searchClientBloc.subject.stream,
+                builder: (context, snapshot){
+                  if(snapshot.hasData){
+                    print("snapshot error => ${snapshot.error}");
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.data!.length,
+                        itemBuilder: (context, index){
+                          Data _data = snapshot.data!.data![index];
+                          return SearchClientCard(title: _data.name!,);
+                        });
+                  }else{
+                    return _noDataLay();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       )
     );

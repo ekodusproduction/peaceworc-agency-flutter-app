@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 import 'package:peaceworc_agency/utils/validator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../job_post/data_classes.dart';
 class AddClientScreen extends StatefulWidget {
@@ -12,6 +16,9 @@ class AddClientScreen extends StatefulWidget {
 }
 
 class _AddClientScreenState extends State<AddClientScreen> with AddClientValidationMixin {
+  File? _image;
+  final _picker = ImagePicker();
+
   var fullNameController = TextEditingController();
   var mobileController = TextEditingController();
   var emailController = TextEditingController();
@@ -211,14 +218,21 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
                     visible: isAddressAvail,
                   ),
                   SizedBox(height: 8.0,),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
-                        border: Border.all()
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Icon(Icons.person_outline, color: Colors.black, size: 60,),
+                  GestureDetector(
+                    onTap: (){
+                      requestPermission();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all()
+                      ),
+                      child: _image != null?
+                        Expanded(child: Container(height:100, width: 100, child: Image.file(File(_image!.path), fit: BoxFit.cover,))):
+                      Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Icon(Icons.person_outline, color: Colors.black, size: 60,),
+                      )
                     ),
                   )
                 ],
@@ -293,6 +307,61 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
     setState(() {
       isAddressAvail = result;
     });
+  }
+
+
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+    await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  void openSettings(){
+    openAppSettings();
+  }
+  Future<void> requestPermission() async{
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      Permission.photos,
+    ].request();
+    if (statuses[Permission.storage]!.isDenied) {
+      // Camera permission is denied
+      print("storage permission denied");
+    }
+    if(statuses[Permission.storage]!.isPermanentlyDenied){
+      print("Permanently Denied");
+      openSettings();
+
+    }
+    if(statuses[Permission.photos]!.isDenied){
+      print("Permission Denied for photos ${statuses[Permission.photos]!.isGranted}");
+      openSettings();
+
+    }
+    if(statuses[Permission.photos]!.isPermanentlyDenied){
+      print("Permanently Denied photos");
+      openSettings();
+
+    }
+    if(Platform.isAndroid){
+      if(statuses[Permission.storage]!.isGranted){
+        print("permission grantedssss ${statuses[Permission.storage]!.isGranted}");
+        _openImagePicker();
+        // openSettings();
+      }
+    }else{
+      if(statuses[Permission.photos]!.isGranted){
+        print("permission granted for photos ${statuses[Permission.photos]!.isGranted}");
+        _openImagePicker();
+        // openSettings();
+      }
+    }
+
   }
 }
 

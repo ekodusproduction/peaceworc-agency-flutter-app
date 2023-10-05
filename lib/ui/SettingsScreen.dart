@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/logout_bloc.dart';
 import 'package:peaceworc_agency/ui/LoginScreen.dart';
 import 'package:peaceworc_agency/ui/authorized_officer/authorize_officer_list_screen.dart';
-import 'package:peaceworc_agency/ui/change_pass/change_password_screen.dart';
+import 'package:peaceworc_agency/ui/change_password/change_password_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/client_list_screen.dart';
 import 'package:peaceworc_agency/ui/components/logout_dialoge.dart';
 import 'package:shared_preferences/shared_preferences.dart';

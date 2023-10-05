@@ -23,9 +23,9 @@ class SearchClientCard extends StatelessWidget {
                 child: SizedBox.fromSize(
                   size: Size.fromRadius(25), // Image radius
                   child: Image.network(imageUrl, fit: BoxFit.cover),
-                ),
+                )
               ),
-              SizedBox(width: 8.0,),
+              SizedBox(width: 8.0),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,9 +56,13 @@ class SearchClientCard extends StatelessWidget {
                   ],
                 ),
               ),
-              InkWell(
-                  onTap: (){},
-                  child: Icon(Icons.add_circle_outline_outlined, color: Colors.black, size: 24)
+              Column(
+                children: [
+                  InkWell(
+                      onTap: (){},
+                      child: Icon(Icons.add_circle_outline_outlined, color: Colors.black, size: 24)
+                  ),
+                ],
               ),
             ],
           ),

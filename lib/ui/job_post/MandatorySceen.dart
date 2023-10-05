@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
+import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
 import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
 import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
 import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
@@ -16,6 +17,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   TextEditingController email = TextEditingController();
   bool isAddressAvail = false;
   bool? isClientDetailsVisible = false;
+  bool isDateTimeAvailable = false;
 
   String street = "";
   String description = "";
@@ -24,6 +26,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   String state = "";
   String? careType = "";
   String careTypeTxt = "Select Care Type";
+  String selectedDateRange = '10-05-20023 To 10-05-2023';
+  String selectedTimeRange = '8:100 PM - 10:05 PM';
 
   @override
   Widget build(BuildContext context) {
@@ -136,27 +140,55 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         const SizedBox(
           height: 8,
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(5)
-            ),
-            child: const Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.add_circle_outline_outlined, color: Colors.black,),
-                      SizedBox(width: 10.0,),
-                      Text('Add Time & Date', style: TextStyle(color: Colors.black, fontSize: 14,fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                  Icon(Icons.arrow_forward_ios, color: Colors.black,)
-                ],
+        GestureDetector(
+          onTap: (){
+            _navigateToDateTimeBottomSheet(context);
+          },
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(5)
               ),
-            )
+              child: isDateTimeAvailable?
+              Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.date_range_outlined, color: Colors.black,),
+                          SizedBox(width: 10.0,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(selectedDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              SizedBox(height: 5),
+                              Text(selectedTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                            ],
+                          )
+                        ],
+                      ),
+                      Icon(Icons.arrow_forward_ios, color: Colors.black,)
+                    ],
+                  )
+              ) : Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.add_circle_outline_outlined, color: Colors.black,),
+                        SizedBox(width: 10.0,),
+                        Text('Add Time & Date', style: TextStyle(color: Colors.black, fontSize: 14,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                    Icon(Icons.arrow_forward_ios, color: Colors.black,)
+                  ],
+                ),
+              )
+          ),
         ),
         const SizedBox(
           height: 8,
@@ -204,7 +236,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
               )
           ),
         ),
-        SizedBox(height: 8,),
+        SizedBox(height: 8),
         Visibility(
           child: Container(
             decoration: BoxDecoration(
@@ -235,7 +267,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
           visible: isAddressAvail,
         ),
         const SizedBox(
-          height: 20,
+          height: 20
         ),
       ],
     );
@@ -294,6 +326,24 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     ) as bool;
     setState(() {
       isAddressAvail = result;
+    });
+  }
+
+  Future<void> _navigateToDateTimeBottomSheet(BuildContext context) async {
+    final result = await showModalBottomSheet<void>(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      builder: (BuildContext context) {
+        return DateTimeBottomSheet();
+      },
+    ) as DateTimeBottomSheetData?;
+    setState(() {
+      if(result != null){
+        selectedDateRange = "${result.startDate} To ${result.endDate}";
+        selectedTimeRange = "${result.startTime} To ${result.endTime}";
+        isDateTimeAvailable = result.isDateTimeAvailAble!;
+      }
     });
   }
 }
