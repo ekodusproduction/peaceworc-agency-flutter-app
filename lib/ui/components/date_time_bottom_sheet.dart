@@ -101,18 +101,54 @@ class _DateTimeBottomSheetState extends State<DateTimeBottomSheet> {
                 SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: (){
-                    setState(() {
+                    if(_getDuration('$startDate $startTime', '$endDate $endTime') >= 3600000){
+                        if(_getDuration('$startDate $startTime', '$endDate $endTime') > 1440){
+                          setState(() {
+                            final data = DateTimeBottomSheetData(
+                                startDate: _selectedStartDate,
+                                endDate: _selectedEndDate,
+                                startTime: _startTime,
+                                endTime: _endTime,
+                                isDateTimeAvailAble: true
+                            );
+                            isNextToEndDateTime = false;
+                            Navigator.pop(context, data);
+                          });
+                        }else{
+                          Fluttertoast.showToast(
+                              msg: "Job duration can not be more than 24 hour.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }
+                    }else{
+                      if(_getDuration('$startDate $startTime', '$endDate $endTime') > 0){
+                        Fluttertoast.showToast(
+                            msg: "Job duration should be more than 1 hour",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }else{
+                        Fluttertoast.showToast(
+                            msg: "Please check the end time",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    }
 
-                      final data = DateTimeBottomSheetData(
-                          startDate: _selectedStartDate,
-                          endDate: _selectedEndDate,
-                          startTime: _startTime,
-                          endTime: _endTime,
-                          isDateTimeAvailAble: true
-                      );
-                      isNextToEndDateTime = false;
-                      Navigator.pop(context, data);
-                    });
                   },
                   child: Text("Save", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14.0),),
 
