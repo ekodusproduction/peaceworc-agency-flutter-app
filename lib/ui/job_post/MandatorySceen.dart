@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
 import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
@@ -28,15 +29,20 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   String state = "";
   String? careType = "";
   String careTypeTxt = "Select Care Type";
-  String selectedDateRange = '10-05-20023 To 10-05-2023';
-  String selectedTimeRange = '8:100 PM - 10:05 PM';
+  String showDateRange = '';
+  String showTimeRange = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Flex(
       direction: Axis.vertical,
       children: [
-        Align(alignment: Alignment.centerLeft,child: const Text("Job Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
+        Align(alignment: Alignment.centerLeft,child: Text("Job Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
         SizedBox(height: 8.0,),
         TextFormField(
           controller: jobTitle,
@@ -164,9 +170,9 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(selectedDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(showDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                               SizedBox(height: 5),
-                              Text(selectedTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(showTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                             ],
                           )
                         ],
@@ -348,8 +354,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     ) as DateTimeBottomSheetData?;
     setState(() {
       if(result != null){
-        selectedDateRange = "${result.startDate} To ${result.endDate}";
-        selectedTimeRange = "${result.startTime} To ${result.endTime}";
+        showDateRange = "${result.startDate} To ${result.endDate}";
+        showTimeRange = "${result.startTime} To ${result.endTime}";
         isDateTimeAvailable = result.isDateTimeAvailAble!;
       }
     });

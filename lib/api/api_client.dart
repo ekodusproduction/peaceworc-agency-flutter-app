@@ -8,7 +8,6 @@ class ApiClient{
     if (_dio == null) {
       _dio = new Dio();
       _dio!.options.baseUrl = ApiLinks.BASE_URL;
-      _dio!.options.connectTimeout = 100;
       _dio!.interceptors.add(LogInterceptor(responseBody: true));
     }
     return _dio;
@@ -18,7 +17,6 @@ class ApiClient{
     if (_dio == null) {
       _dio = new Dio();
       _dio!.options.baseUrl = ApiLinks.BASE_URL;
-      _dio!.options.connectTimeout = 100;
       _dio!.interceptors.add(TokenInterceptor());
       _dio!.interceptors.add(LogInterceptor(responseBody: true));
     }
