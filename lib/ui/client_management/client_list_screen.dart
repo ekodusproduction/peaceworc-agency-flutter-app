@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/ui/client_management/add_client_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/client_management_card.dart';
 class ClientManagementListScreen extends StatefulWidget {
   const ClientManagementListScreen({super.key});
@@ -48,16 +49,7 @@ class _ClientManagementListScreenState extends State<ClientManagementListScreen>
                 ),
               ),
               onPressed: () {
-                final snackBar = SnackBar(
-                  content: const Text('Added successfully!'),
-                  action: SnackBarAction(
-                    label: 'ok',
-                    onPressed: () {
-                      // Some code to undo the change.
-                    },
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddClientScreen()));
               },
               child: const Text(
                 'Add Client',

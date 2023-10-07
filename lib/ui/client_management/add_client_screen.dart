@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:peaceworc_agency/bloc/create_client_bloc.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 import 'package:peaceworc_agency/utils/validator.dart';
@@ -18,6 +19,7 @@ class AddClientScreen extends StatefulWidget {
 class _AddClientScreenState extends State<AddClientScreen> with AddClientValidationMixin {
   File? _image;
   final _picker = ImagePicker();
+  bool isLoading = false;
 
   var fullNameController = TextEditingController();
   var mobileController = TextEditingController();
@@ -38,6 +40,61 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
   String city = "";
   String state = "";
   bool isAddressAvail = false;
+
+  @override
+  void initState() {
+    createClientListener();
+    super.initState();
+  }
+
+  void createClient(File empFace, String empCode){
+    createClientBloc.createClient(
+      empFace,
+      empCode,
+      'test1@gmail.com',
+      'test1',
+      '8011299668',
+      'test address, test address, test address',
+      'short address',
+      'street 1',
+      'appartment or unit 1',
+      '1',
+      'boston',
+      '12345',
+      'state',
+      'usa',
+      '40.7128',
+      '74.0060',
+      '56',
+      'Male'
+    );
+  }
+
+  void createClientListener() {
+    setState(() {
+      isLoading = true;
+    });
+    createClientBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -253,16 +310,7 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
                     ),
                   ),
                   onPressed: () {
-                    final snackBar = SnackBar(
-                      content: const Text('Password changed successfully!'),
-                      action: SnackBarAction(
-                        label: 'ok',
-                        onPressed: () {
-                          // Some code to undo the change.
-                        },
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    createClient(_image!, _image!.path.split('/').last);
                   },
                   child: const Text(
                     'Update',

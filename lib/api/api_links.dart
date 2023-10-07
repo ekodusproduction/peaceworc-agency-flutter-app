@@ -19,5 +19,6 @@ class ApiLinks{
   static const String logout = 'logout';
   static const String getPostJob = 'job/get-job';
   static const String searchClient = 'client/search';
+  static const String createClient = 'client/create-profile';
 
 }
