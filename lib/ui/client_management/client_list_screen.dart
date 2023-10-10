@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/bloc/get_client_bloc.dart';
+import 'package:peaceworc_agency/model/get_client/get_client_response.dart';
 import 'package:peaceworc_agency/ui/client_management/add_client_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/client_management_card.dart';
 class ClientManagementListScreen extends StatefulWidget {
@@ -9,11 +11,43 @@ class ClientManagementListScreen extends StatefulWidget {
 }
 
 class _ClientManagementListScreenState extends State<ClientManagementListScreen> {
-  final List _authorizeOfficer = [
-    "Test mark",
-    "Isiah Borak",
-    "Hennos Todler",
-  ];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    getClient();
+    super.initState();
+  }
+
+  void getClient(){
+    getClientBloc.getClient();
+  }
+  void getClientListener() {
+    setState(() {
+      isLoading = true;
+    });
+    getClientBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +64,22 @@ class _ClientManagementListScreenState extends State<ClientManagementListScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: _authorizeOfficer.length,
-              itemBuilder: (context, index){
-                return ClientManagementCard(title: _authorizeOfficer[index]);
-              }),
+          StreamBuilder(
+            stream: getClientBloc.subject.stream,
+            builder: (context, snapshot){
+              if(snapshot.hasData){
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.data!.length,
+                    itemBuilder: (context, index){
+                      Data _data = snapshot.data!.data![index];
+                      return ClientManagementCard(data: _data);
+                    });
+              }else{
+                return _noDataLay();
+              }
+            }
+          ),
           Positioned(
             bottom: 30,
             left: 15,
@@ -61,5 +105,9 @@ class _ClientManagementListScreenState extends State<ClientManagementListScreen>
         ],
       ),
     );
+  }
+
+  Widget _noDataLay() {
+    return Center(child: Text("No data found.", style: TextStyle(color: Colors.black),),);
   }
 }
