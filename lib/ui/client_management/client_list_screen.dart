@@ -22,6 +22,7 @@ class _ClientManagementListScreenState extends State<ClientManagementListScreen>
   void getClient(){
     getClientBloc.getClient();
   }
+
   void getClientListener() {
     setState(() {
       isLoading = true;

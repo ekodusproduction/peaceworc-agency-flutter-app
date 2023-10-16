@@ -25,6 +25,8 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
   var mobileController = TextEditingController();
   var emailController = TextEditingController();
   var ageController = TextEditingController();
+  final formGlobalKey = GlobalKey < FormState > ();
+
 
   String dropdownValue = 'Select gender';
   List <String> spinnerItems = [
@@ -32,7 +34,7 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
     'Male',
     'Female',
     'Other',
-  ] ;
+  ];
 
   String street = "";
   String description = "";
@@ -51,13 +53,13 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
     createClientBloc.createClient(
       empFace,
       empCode,
-      'test1@gmail.com',
-      'test1',
-      '8011299668',
-      'test address, test address, test address',
-      'short address',
-      'street 1',
-      'appartment or unit 1',
+      emailController.text,
+      fullNameController.text,
+      mobileController.text,
+      '${street}, ${place}',
+      place,
+      street,
+      'apartment or unit 1',
       '1',
       'boston',
       '12345',
@@ -65,8 +67,8 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
       'usa',
       '40.7128',
       '74.0060',
-      '56',
-      'Male'
+      ageController.text,
+      dropdownValue
     );
   }
 
@@ -108,191 +110,194 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
           Padding(
             padding: const EdgeInsets.only(top:10.0, left: 20.0, right: 20.0),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    controller: fullNameController,
-                    style: TextStyle(color: Colors.black),
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.black),
-                        labelText: 'Full name',
-                        labelStyle: TextStyle(color: Colors.black)
-                    ),
-                    validator: (String? value) {
-                      if(isNameValid(value!).length != 0){
-                        return isNameValid(value!);
-                      }
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                  ),
-                  SizedBox(height: 10,),
-                  TextFormField(
-                    controller: mobileController,
-                    style: TextStyle(color: Colors.black),
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.black),
-                        labelText: 'Mobile number',
-                        labelStyle: TextStyle(color: Colors.black)
-                    ),
-                    maxLength: 10,
-                    keyboardType: TextInputType.number,
-                    validator: (String? value) {
-                      if(isNumberValid(value!).length != 0){
-                        return isNumberValid(value!);
-                      }
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    style: TextStyle(color: Colors.black),
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.black),
-                        labelText: 'Email Address',
-                        labelStyle: TextStyle(color: Colors.black)
-                    ),
-                    validator: (String? value) {
-                      if(!isEmailValidate(value!)){
-                        return 'Invalid email address';
-                      }
-                      return null;
-                    },
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: emailController,
-                          style: TextStyle(color: Colors.black),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(color: Colors.black),
-                              labelText: 'Age',
-                              labelStyle: TextStyle(color: Colors.black)
-                          ),
-                          validator: (String? value) {
-                            if(isAgeValid(value!).length != 0){
-                              return isAgeValid(value!);
-                            }
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
+              child: Form(
+                key: formGlobalKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: fullNameController,
+                      style: TextStyle(color: Colors.black),
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.black),
+                          labelText: 'Full name',
+                          labelStyle: TextStyle(color: Colors.black)
                       ),
-                      SizedBox(width: 10,),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 5,),
-                            DropdownButton<String>(
-                              value: dropdownValue,
-                              icon: Icon(Icons.arrow_drop_down),
-                              iconSize: 24,
-                              elevation: 16,
-                              style: TextStyle(color: Colors.black, fontSize: 18),
-                              underline: Container(
-                                height: 2,
-                                color: Colors.white,
-                              ),
-                              onChanged: (String? data) {
-                                setState(() {
-                                  dropdownValue = data!;
-                                });
-                              },
-                              items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
+                      validator: (String? value) {
+                        if(isNameValid(value!).length != 0){
+                          return isNameValid(value!);
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    SizedBox(height: 10,),
+                    TextFormField(
+                      controller: mobileController,
+                      style: TextStyle(color: Colors.black),
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.black),
+                          labelText: 'Mobile number',
+                          labelStyle: TextStyle(color: Colors.black)
+                      ),
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
+                      validator: (String? value) {
+                        if(isNumberValid(value!).length != 0){
+                          return isNumberValid(value!);
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    TextFormField(
+                      controller: emailController,
+                      style: TextStyle(color: Colors.black),
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.black),
+                          labelText: 'Email Address',
+                          labelStyle: TextStyle(color: Colors.black)
+                      ),
+                      validator: (String? value) {
+                        if(!isEmailValidate(value!)){
+                          return 'Invalid email address';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: emailController,
+                            style: TextStyle(color: Colors.black),
+                            obscureText: false,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(color: Colors.black),
+                                labelText: 'Age',
+                                labelStyle: TextStyle(color: Colors.black)
                             ),
-                            SizedBox(height: 11,),
-                            Divider(height: 3,color: Colors.grey.shade500,)
-                          ],
+                            validator: (String? value) {
+                              if(isAgeValid(value!).length != 0){
+                                return isAgeValid(value!);
+                              }
+                              return null;
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  GestureDetector(
-                    onTap: (){
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchLocationScreen()));
-                      _navigateToSearchLocation(context);
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: Column(
                             children: [
-                              Icon(Icons.search, color: Colors.grey,),
-                              SizedBox(width: 10.0,),
-                              Text('Search Address', style: TextStyle(color: Colors.grey, fontSize: 13,fontWeight: FontWeight.bold),),
+                              SizedBox(height: 5,),
+                              DropdownButton<String>(
+                                value: dropdownValue,
+                                icon: Icon(Icons.arrow_drop_down),
+                                iconSize: 24,
+                                elevation: 16,
+                                style: TextStyle(color: Colors.black, fontSize: 18),
+                                underline: Container(
+                                  height: 2,
+                                  color: Colors.white,
+                                ),
+                                onChanged: (String? data) {
+                                  setState(() {
+                                    dropdownValue = data!;
+                                  });
+                                },
+                                items: spinnerItems.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                              SizedBox(height: 11,),
+                              Divider(height: 3,color: Colors.grey.shade500,)
                             ],
                           ),
-                        )
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 8,),
-                  Visibility(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[300],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
-                            Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                            Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[600],
+                    SizedBox(height: 10,),
+                    GestureDetector(
+                      onTap: (){
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchLocationScreen()));
+                        _navigateToSearchLocation(context);
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 15.0, bottom: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.search, color: Colors.grey,),
+                                SizedBox(width: 10.0,),
+                                Text('Search Address', style: TextStyle(color: Colors.grey, fontSize: 13,fontWeight: FontWeight.bold),),
+                              ],
                             ),
-                            Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                            Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
-                            SizedBox(height: 4,),
-                            Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                            Text("", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                            SizedBox(height: 4,),
-                          ],
+                          )
+                      ),
+                    ),
+                    SizedBox(height: 8,),
+                    Visibility(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey[300],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
+                              Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                              Divider(
+                                thickness: 0.5,
+                                color: Colors.grey[600],
+                              ),
+                              Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                              Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                              SizedBox(height: 4,),
+                              Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                              Text("", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                              SizedBox(height: 4,),
+                            ],
+                          ),
                         ),
                       ),
+                      visible: isAddressAvail,
                     ),
-                    visible: isAddressAvail,
-                  ),
-                  SizedBox(height: 8.0,),
-                  GestureDetector(
-                    onTap: (){
-                      requestPermission();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all()
+                    SizedBox(height: 8.0,),
+                    GestureDetector(
+                      onTap: (){
+                        requestPermission();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all()
+                        ),
+                        child: _image != null?
+                          Expanded(child: Container(height:100, width: 100, child: Image.file(File(_image!.path), fit: BoxFit.cover,))):
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Icon(Icons.person_outline, color: Colors.black, size: 60,),
+                        )
                       ),
-                      child: _image != null?
-                        Expanded(child: Container(height:100, width: 100, child: Image.file(File(_image!.path), fit: BoxFit.cover,))):
-                      Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: Icon(Icons.person_outline, color: Colors.black, size: 60,),
-                      )
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -310,7 +315,10 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
                     ),
                   ),
                   onPressed: () {
-                    createClient(_image!, _image!.path.split('/').last);
+                    if(formGlobalKey.currentState!.validate()){
+                      formGlobalKey.currentState!.save();
+                      createClient(_image!, _image!.path.split('/').last);
+                    }
                   },
                   child: const Text(
                     'Update',
@@ -357,7 +365,6 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
     });
   }
 
-
   // Implementing the image picker
   Future<void> _openImagePicker() async {
     final XFile? pickedImage =
@@ -372,6 +379,7 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
   void openSettings(){
     openAppSettings();
   }
+
   Future<void> requestPermission() async{
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
