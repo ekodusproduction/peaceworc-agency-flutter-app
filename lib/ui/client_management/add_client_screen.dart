@@ -392,17 +392,14 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
     if(statuses[Permission.storage]!.isPermanentlyDenied){
       print("Permanently Denied");
       openSettings();
-
     }
     if(statuses[Permission.photos]!.isDenied){
       print("Permission Denied for photos ${statuses[Permission.photos]!.isGranted}");
       openSettings();
-
     }
     if(statuses[Permission.photos]!.isPermanentlyDenied){
       print("Permanently Denied photos");
       openSettings();
-
     }
     if(Platform.isAndroid){
       if(statuses[Permission.storage]!.isGranted){
@@ -417,7 +414,6 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
         // openSettings();
       }
     }
-
   }
 }
 

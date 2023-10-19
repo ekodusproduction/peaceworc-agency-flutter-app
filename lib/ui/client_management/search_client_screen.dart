@@ -90,7 +90,9 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
                         itemCount: snapshot.data!.data!.length,
                         itemBuilder: (context, index){
                           Data _data = snapshot.data!.data![index];
-                          return SearchClientCard(title: _data.name!,);
+                          return SearchClientCard(data: _data,onTap: (){
+                            Navigator.pop(context, _data);
+                          },);
                         });
                   }else{
                     return _noDataLay();

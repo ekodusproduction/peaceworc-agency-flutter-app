@@ -40,6 +40,7 @@ class _DateTimeBottomSheetState extends State<DateTimeBottomSheet> {
       if (args.value is DateTime) {
         _selectedEndDate = DateFormat('MM-dd-yyyy').format(args.value).toString();
         endDate = DateFormat('yyy-MM-dd').format(args.value).toString();
+        print("end date check => $endDate");
       }
     });
   }
@@ -101,19 +102,21 @@ class _DateTimeBottomSheetState extends State<DateTimeBottomSheet> {
                 SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: (){
+                    print("pressed $startDate $startTime,  $endDate $endTime");
                     if(_getDuration('$startDate $startTime', '$endDate $endTime') >= 3600000){
                         if(_getDuration('$startDate $startTime', '$endDate $endTime') > 1440){
                           setState(() {
-                            final data = DateTimeBottomSheetData(
-                                startDate: _selectedStartDate,
-                                endDate: _selectedEndDate,
-                                startTime: _startTime,
-                                endTime: _endTime,
-                                isDateTimeAvailAble: true
-                            );
                             isNextToEndDateTime = false;
-                            Navigator.pop(context, data);
                           });
+                          final data = DateTimeBottomSheetData(
+                              startDate: _selectedStartDate,
+                              endDate: _selectedEndDate,
+                              startTime: _startTime,
+                              endTime: _endTime,
+                              isDateTimeAvailAble: true
+                          );
+                          Navigator.pop(context, data);
+                          print("reached here ${data.startDate}");
                         }else{
                           Fluttertoast.showToast(
                               msg: "Job duration can not be more than 24 hour.",
@@ -179,11 +182,14 @@ class _DateTimeBottomSheetState extends State<DateTimeBottomSheet> {
                   ],
                 ),
                 SizedBox(height: 10.0),
-                SfDateRangePicker(
-                  onSelectionChanged: _onStartDateSelectionChanged,
-                  selectionMode: DateRangePickerSelectionMode.single,
-                  selectionColor: Colors.black,
-                  minDate: DateTime.now(),
+                Visibility(
+                  visible: isNextToEndDateTime ? false : true,
+                  child: SfDateRangePicker(
+                    onSelectionChanged: _onStartDateSelectionChanged,
+                    selectionMode: DateRangePickerSelectionMode.single,
+                    selectionColor: Colors.black,
+                    minDate: DateTime.now(),
+                  ),
                 ),
                 SizedBox(height: 10.0),
                 GestureDetector(
@@ -332,8 +338,8 @@ class _DateTimeBottomSheetState extends State<DateTimeBottomSheet> {
     DateTime dt1 = DateTime.parse(startDateTime);
     DateTime dt2 = DateTime.parse(endDateTime);
 
-    print("start -> ${dt1}");
-    print("end -> ${dt2}");
+    print("start1 -> ${dt1}");
+    print("end1 -> ${dt2}");
 
     Duration diff = dt2.difference(dt1);
     print("${diff.inDays}days ${diff.inHours}hr ${diff.inMilliseconds}");

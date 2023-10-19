@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/helper/constants.dart';
 import 'package:peaceworc_agency/ui/client_management/add_client_screen.dart';
 import 'package:peaceworc_agency/ui/client_management/search_client_screen.dart';
+
+import '../../model/search_client/search_client_response.dart';
 class ClientSelectDialoge extends StatefulWidget {
   const ClientSelectDialoge({super.key});
 
@@ -81,16 +83,27 @@ class _ClientSelectDialogeState extends State<ClientSelectDialoge> {
                   value: 'add existing client',
                   groupValue: '',
                   onChanged: (String? v){
-                    Navigator.of(context).pop();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchClientScreen()));
+                    //Navigator.of(context).pop();
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchClientScreen()));
+                    _navigateToSearchClient(context);
                   },
                 )
             ),
           ),
-
-          
         ],
       ),
     );
+  }
+
+
+  Future<void> _navigateToSearchClient(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SearchClientScreen()),
+    ) as Data;
+
+    if (!mounted) return;
+    print(result.name);
+    Navigator.pop(context, result);
   }
 }

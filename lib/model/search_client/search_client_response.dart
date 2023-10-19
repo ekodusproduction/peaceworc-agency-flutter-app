@@ -47,8 +47,8 @@ class Data {
   String? address;
   String? shortAddress;
   String? street;
-  Null? appartmentOrUnit;
-  Null? floorNo;
+  dynamic? appartmentOrUnit;
+  dynamic? floorNo;
   String? city;
   String? state;
   String? zipCode;

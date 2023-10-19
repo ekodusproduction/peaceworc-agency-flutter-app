@@ -7,6 +7,8 @@ import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
 import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
 import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
+import 'package:peaceworc_agency/model/search_client/search_client_response.dart' as seachClient;
+
 class MandatoryScreen extends StatefulWidget {
   const MandatoryScreen({super.key});
   @override
@@ -19,8 +21,9 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   TextEditingController remittance = TextEditingController();
 
   bool isAddressAvail = false;
-  bool? isClientDetailsVisible = false;
+  bool? isCareTypeAvailable = false;
   bool isDateTimeAvailable = false;
+  bool? isClientDetailsAvailable = false;
 
   String street = "";
   String description = "";
@@ -31,6 +34,11 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
   String careTypeTxt = "Select Care Type";
   String showDateRange = '';
   String showTimeRange = '';
+
+  //client details
+  String clientName = '';
+  String clientAge = '';
+  String clientGender = '';
 
   @override
   void initState() {
@@ -106,20 +114,16 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
           ),
         ),
         Visibility(
-          visible: isClientDetailsVisible!,
+          visible: isCareTypeAvailable!,
           child: const SizedBox(
             height: 8,
           ),
         ),
         Visibility(
-          visible: isClientDetailsVisible!,
+          visible: isCareTypeAvailable!,
           child: GestureDetector(
             onTap: (){
-              showDialog(context: context,
-                  builder: (BuildContext context){
-                    return ClientSelectDialoge();
-                  }
-              );
+              _navigateToClientSelectDialog(context);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -139,6 +143,64 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Colors.white,)
+                    ],
+                  ),
+                )
+            ),
+          ),
+        ),
+        Visibility(
+          visible: isClientDetailsAvailable!,
+          child: const SizedBox(
+            height: 8,
+          ),
+        ),
+        Visibility(
+          visible: isClientDetailsAvailable!,
+          child: GestureDetector(
+            onTap: (){
+              _navigateToClientSelectDialog(context);
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(clientName, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                            SizedBox(width: 10,),
+                            Text('age: ${clientAge} years', style: TextStyle(color: Colors.black),)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(careType!, style: TextStyle(color: Colors.black),),
+                            SizedBox(width: 10,),
+                            Text(clientGender, style: TextStyle(color: Colors.black),),
+                          ],
+                        )
+                      ],
+                    ),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isClientDetailsAvailable = false;
+                            isCareTypeAvailable = true;
+                          });
+                        },
+                          child: Icon(Icons.cancel_outlined, color: Colors.black,)
+                      )
                     ],
                   ),
                 )
@@ -295,12 +357,13 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
 
     if (!mounted) return;
 
-    street = result.street!;
-    description = result.description!;
-    place = result.place!;
-    city = result.city!;
-    state = result.state!;
-
+    if(result != null){
+      street = result.street!;
+      description = result.description!;
+      place = result.place!;
+      city = result.city!;
+      state = result.state!;
+    }
     _navigateToBottomSheet(context, street, city, state);
   }
 
@@ -314,19 +377,21 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
       },
     ) as CareTypeData?;
 
-    setState(() {
-      careType = result?.careType;
-      if(result?.isClientVisible != null){
-        isClientDetailsVisible = result?.isClientVisible;
-      }else{
-        isClientDetailsVisible = false;
-      }
-      if(careType != null){
-        if(careType!.isNotEmpty){
-          careTypeTxt = careType!;
+    if(result != null){
+      setState(() {
+        careType = result?.careType;
+        if(result?.isClientVisible != null){
+          isCareTypeAvailable = result?.isClientVisible;
+        }else{
+          isCareTypeAvailable = false;
         }
-      }
-    });
+        if(careType != null){
+          if(careType!.isNotEmpty){
+            careTypeTxt = careType!;
+          }
+        }
+      });
+    }
   }
 
   Future<void> _navigateToBottomSheet(BuildContext context, String _street, String _city, String _state) async {
@@ -338,9 +403,12 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         return AddressBottomSheet(street: _street, city: _city, state: _state, zipcode: "12345",);
       },
     ) as bool;
-    setState(() {
-      isAddressAvail = result;
-    });
+    if(result != null){
+      setState(() {
+        isAddressAvail = result;
+      });
+    }
+
   }
 
   Future<void> _navigateToDateTimeBottomSheet(BuildContext context) async {
@@ -352,13 +420,33 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         return DateTimeBottomSheet();
       },
     ) as DateTimeBottomSheetData?;
-    setState(() {
-      if(result != null){
+
+    if(result != null){
+      setState(() {
         showDateRange = "${result.startDate} To ${result.endDate}";
         showTimeRange = "${result.startTime} To ${result.endTime}";
         isDateTimeAvailable = result.isDateTimeAvailAble!;
-      }
-    });
+      });
+    }
+  }
+
+  Future<void> _navigateToClientSelectDialog(BuildContext context) async {
+
+    final result = await showDialog(context: context,
+        builder: (BuildContext context){
+          return ClientSelectDialoge();
+        }
+    ) as seachClient.Data?;
+
+    if(result != null){
+      setState(() {
+        isClientDetailsAvailable = true;
+        isCareTypeAvailable = false;
+        clientName = result.name!;
+        clientGender = result.gender!;
+        clientAge = result.age!;
+      });
+    }
   }
 }
 
