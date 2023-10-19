@@ -10,10 +10,11 @@ class JobPostScreen extends StatefulWidget {
 
   @override
   State<JobPostScreen> createState() => _JobPostScreenState();
+
 }
 
-class _JobPostScreenState extends State<JobPostScreen> {
-
+class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidationMixin {
+  final mandatoryScreen = MandatoryScreen();
   int _activeStepIndex = 0;
   bool isLast = false;
 
@@ -87,7 +88,10 @@ class _JobPostScreenState extends State<JobPostScreen> {
                     borderRadius: BorderRadius.circular(5)
                 ),
                 child: TextButton(
-                  onPressed: details.onStepContinue,
+                  onPressed: (){
+                    mandatoryScreen.checkValidation();
+                    //details.onStepContinue;
+                  },
                   child: const Text('Next Step >', style: TextStyle(color: Colors.white),),
                 ),
               ),
@@ -101,7 +105,9 @@ class _JobPostScreenState extends State<JobPostScreen> {
                     borderRadius: BorderRadius.circular(5)
                 ),
                 child: TextButton(
-                  onPressed: details.onStepContinue,
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
                   child: const Text('Save', style: TextStyle(color: Colors.white),),
                 ),
               ),
