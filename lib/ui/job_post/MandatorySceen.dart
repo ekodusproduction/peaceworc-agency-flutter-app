@@ -26,20 +26,85 @@ class MandatoryScreen extends StatefulWidget {
   String showDateRange = '';
   String showTimeRange = '';
 
-  void checkValidation(){
-    if(showDateRange.isEmpty){
-      Fluttertoast.showToast(
-          msg: "Please check date time",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+
+  String checkValidation(){
+    if("jobTitle.text".isNotEmpty){
+      if("!jobDesc.text".isEmpty){
+        if(careType?.length != 0 && careType != null){
+          if(showDateRange.isNotEmpty){
+            if(showTimeRange.isNotEmpty){
+              if("remittance.text".isNotEmpty){
+                if(street.isNotEmpty){
+                  return "";
+                }else{
+                  Fluttertoast.showToast(
+                      msg: "Address is required",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                }
+              }else{
+                Fluttertoast.showToast(
+                    msg: "Remittance is required",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              }
+            }else{
+              Fluttertoast.showToast(
+                  msg: "Select time",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+            }
+          }else{
+            Fluttertoast.showToast(
+                msg: "Select date",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          }
+        }else{
+          Fluttertoast.showToast(
+              msg: "Select a care type",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
+      }else{
+        Fluttertoast.showToast(
+            msg: "Job description is required",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
     }else{
       Fluttertoast.showToast(
-          msg: "Hello world",
+          msg: "Job title is required",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -48,7 +113,7 @@ class MandatoryScreen extends StatefulWidget {
           fontSize: 16.0
       );
     }
-
+    return "a";
   }
 
   MandatoryScreen({super.key});
@@ -59,11 +124,8 @@ class MandatoryScreen extends StatefulWidget {
 
 class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
   TextEditingController jobTitle = TextEditingController();
-  TextEditingController email = TextEditingController();
+  TextEditingController jobDesc = TextEditingController();
   TextEditingController remittance = TextEditingController();
-
-
-
 
   //client details
   String clientName = '';
@@ -100,7 +162,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
           height: 8,
         ),
         TextFormField(
-          controller: email,
+          controller: jobDesc,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job description & responsibilities',

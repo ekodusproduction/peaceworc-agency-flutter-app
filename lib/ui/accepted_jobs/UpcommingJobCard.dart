@@ -17,7 +17,7 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
       },
       child: Container(
         color: Colors.white,
-        width: 350,
+        width: MediaQuery.of(context).size.width*0.9,
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: Card(
