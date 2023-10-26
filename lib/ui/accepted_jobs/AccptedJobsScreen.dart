@@ -11,7 +11,7 @@ class AcceptedJobsScreen extends StatefulWidget {
 
 class _AcceptedJobsScreenState extends State<AcceptedJobsScreen> {
   final List _jobs = [
-    "New Test Job, urgent requirement for female caregiver hello world how are you not good just chill.",
+    "New Test Job, urgent requirement for female caregiver hello world how are you not good just chill. bvjhEWJDJXWE HJVQWEJDEW NVJWVQD  VQJHWVXQ HJVHJQ",
     "post_2",
     "post_3"
   ];
@@ -34,7 +34,7 @@ class _AcceptedJobsScreenState extends State<AcceptedJobsScreen> {
                   return OngoingJobCard(child: _jobs[index]);
                 }),
           ),
-          SizedBox(height: 8,),
+          SizedBox(height: 8),
           Text("Upcomming Job", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),),
           SizedBox(
             height: 180,

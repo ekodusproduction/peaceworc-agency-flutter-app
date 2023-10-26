@@ -25,15 +25,18 @@ class MandatoryScreen extends StatefulWidget {
   String careTypeTxt = "Select Care Type";
   String showDateRange = '';
   String showTimeRange = '';
+  String jobTitle = '';
+  String jobDesc = '';
+  String remittance = '';
 
 
   String checkValidation(){
-    if("jobTitle.text".isNotEmpty){
-      if("!jobDesc.text".isEmpty){
+    if(jobTitle.isNotEmpty){
+      if(jobDesc.isEmpty){
         if(careType?.length != 0 && careType != null){
           if(showDateRange.isNotEmpty){
             if(showTimeRange.isNotEmpty){
-              if("remittance.text".isNotEmpty){
+              if(remittance.isNotEmpty){
                 if(street.isNotEmpty){
                   return "";
                 }else{
@@ -146,6 +149,11 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         SizedBox(height: 8.0,),
         TextFormField(
           controller: jobTitle,
+          onChanged: (content){
+            setState(() {
+              widget.jobTitle = content;
+            });
+          },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job Title',
@@ -163,6 +171,11 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         ),
         TextFormField(
           controller: jobDesc,
+          onChanged: (content){
+            setState(() {
+              widget.jobDesc = content;
+            });
+          },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job description & responsibilities',
