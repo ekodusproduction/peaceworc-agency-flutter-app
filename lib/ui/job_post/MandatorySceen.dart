@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:peaceworc_agency/bloc/job_bloc.dart';
+import 'package:peaceworc_agency/bloc/job_event.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
 import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
@@ -11,6 +14,18 @@ import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 import 'package:peaceworc_agency/model/search_client/search_client_response.dart' as seachClient;
 
 class MandatoryScreen extends StatefulWidget {
+  String test = '';
+  MandatoryScreen({super.key});
+  @override
+  State<MandatoryScreen> createState() => MandatoryScreenState();
+
+}
+
+class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
+  TextEditingController jobTitle = TextEditingController();
+  TextEditingController jobDesc = TextEditingController();
+  TextEditingController remittance = TextEditingController();
+
   bool isAddressAvail = false;
   bool? isCareTypeAvailable = false;
   bool isDateTimeAvailable = false;
@@ -25,110 +40,7 @@ class MandatoryScreen extends StatefulWidget {
   String careTypeTxt = "Select Care Type";
   String showDateRange = '';
   String showTimeRange = '';
-  String jobTitle = '';
-  String jobDesc = '';
-  String remittance = '';
-
-
-  String checkValidation(){
-    if(jobTitle.isNotEmpty){
-      if(jobDesc.isEmpty){
-        if(careType?.length != 0 && careType != null){
-          if(showDateRange.isNotEmpty){
-            if(showTimeRange.isNotEmpty){
-              if(remittance.isNotEmpty){
-                if(street.isNotEmpty){
-                  return "";
-                }else{
-                  Fluttertoast.showToast(
-                      msg: "Address is required",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  );
-                }
-              }else{
-                Fluttertoast.showToast(
-                    msg: "Remittance is required",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-              }
-            }else{
-              Fluttertoast.showToast(
-                  msg: "Select time",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.black,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-            }
-          }else{
-            Fluttertoast.showToast(
-                msg: "Select date",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          }
-        }else{
-          Fluttertoast.showToast(
-              msg: "Select a care type",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
-        }
-      }else{
-        Fluttertoast.showToast(
-            msg: "Job description is required",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }
-    }else{
-      Fluttertoast.showToast(
-          msg: "Job title is required",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-    }
-    return "a";
-  }
-
-  MandatoryScreen({super.key});
-  @override
-  State<MandatoryScreen> createState() => _MandatoryScreenState();
-
-}
-
-class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
-  TextEditingController jobTitle = TextEditingController();
-  TextEditingController jobDesc = TextEditingController();
-  TextEditingController remittance = TextEditingController();
+  String jobTitleText = "";
 
   //client details
   String clientName = '';
@@ -142,6 +54,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
 
   @override
   Widget build(BuildContext context) {
+    final jobBloc = context.read<JobBloc>();
     return Flex(
       direction: Axis.vertical,
       children: [
@@ -150,9 +63,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         TextFormField(
           controller: jobTitle,
           onChanged: (content){
-            setState(() {
-              widget.jobTitle = content;
-            });
+           BlocProvider.of<JobBloc>(context).add(OnChangeJobEvent(title: content));
+            //jobTitleText = content;
           },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
@@ -171,11 +83,6 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
         ),
         TextFormField(
           controller: jobDesc,
-          onChanged: (content){
-            setState(() {
-              widget.jobDesc = content;
-            });
-          },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job description & responsibilities',
@@ -209,7 +116,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                       children: [
                         Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
                         SizedBox(width: 10.0,),
-                        Text(widget.careTypeTxt, style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                        Text(careTypeTxt, style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
                       ],
                     ),
                     Icon(Icons.arrow_forward_ios, color: Colors.white,)
@@ -219,13 +126,13 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
           ),
         ),
         Visibility(
-          visible: widget.isCareTypeAvailable!,
+          visible: isCareTypeAvailable!,
           child: const SizedBox(
             height: 8,
           ),
         ),
         Visibility(
-          visible: widget.isCareTypeAvailable!,
+          visible: isCareTypeAvailable!,
           child: GestureDetector(
             onTap: (){
               _navigateToClientSelectDialog(context);
@@ -255,13 +162,13 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
           ),
         ),
         Visibility(
-          visible: widget.isClientDetailsAvailable!,
+          visible: isClientDetailsAvailable!,
           child: const SizedBox(
             height: 8,
           ),
         ),
         Visibility(
-          visible: widget.isClientDetailsAvailable!,
+          visible: isClientDetailsAvailable!,
           child: GestureDetector(
             onTap: (){
               _navigateToClientSelectDialog(context);
@@ -290,7 +197,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.careType!, style: TextStyle(color: Colors.black),),
+                            Text(careType!, style: TextStyle(color: Colors.black),),
                             SizedBox(width: 10,),
                             Text(clientGender, style: TextStyle(color: Colors.black),),
                           ],
@@ -300,8 +207,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                       InkWell(
                         onTap: (){
                           setState(() {
-                            widget.isClientDetailsAvailable = false;
-                            widget.isCareTypeAvailable = true;
+                            isClientDetailsAvailable = false;
+                            isCareTypeAvailable = true;
                           });
                         },
                           child: Icon(Icons.cancel_outlined, color: Colors.black,)
@@ -324,7 +231,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(5)
               ),
-              child: widget.isDateTimeAvailable?
+              child: isDateTimeAvailable?
               Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
                   child: Row(
@@ -337,9 +244,9 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.showDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(showDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                               SizedBox(height: 5),
-                              Text(widget.showTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(showTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                             ],
                           )
                         ],
@@ -429,14 +336,14 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
-                  Text(widget.description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text(place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
+                  Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Divider(
                     thickness: 0.5,
                     color: Colors.grey[600],
                   ),
                   Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                  Text(widget.street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                  Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                   SizedBox(height: 4,),
                   Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Text("", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
@@ -445,7 +352,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
               ),
             ),
           ),
-          visible: widget.isAddressAvail,
+          visible: isAddressAvail,
         ),
         const SizedBox(
           height: 20
@@ -463,13 +370,13 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     if (!mounted) return;
 
     if(result != null){
-      widget.street = result.street!;
-      widget.description = result.description!;
-      widget.place = result.place!;
-      widget.city = result.city!;
-      widget.state = result.state!;
+      street = result.street!;
+      description = result.description!;
+      place = result.place!;
+      city = result.city!;
+      state = result.state!;
     }
-    _navigateToBottomSheet(context, widget.street, widget.city, widget.state);
+    _navigateToBottomSheet(context, street, city, state);
   }
 
   Future<void> _navigateToTypeOfCare(BuildContext context) async {
@@ -484,15 +391,15 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
 
     if(result != null){
       setState(() {
-        widget.careType = result?.careType;
+        careType = result?.careType;
         if(result?.isClientVisible != null){
-          widget.isCareTypeAvailable = result?.isClientVisible;
+          isCareTypeAvailable = result?.isClientVisible;
         }else{
-          widget.isCareTypeAvailable = false;
+          isCareTypeAvailable = false;
         }
-        if(widget.careType != null){
-          if(widget.careType!.isNotEmpty){
-            widget.careTypeTxt = widget.careType!;
+        if(careType != null){
+          if(careType!.isNotEmpty){
+            careTypeTxt = careType!;
           }
         }
       });
@@ -510,7 +417,7 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
     ) as bool;
     if(result != null){
       setState(() {
-        widget.isAddressAvail = result;
+        isAddressAvail = result;
       });
     }
 
@@ -528,9 +435,9 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
 
     if(result != null){
       setState(() {
-        widget.showDateRange = "${result.startDate} To ${result.endDate}";
-        widget.showTimeRange = "${result.startTime} To ${result.endTime}";
-        widget.isDateTimeAvailable = result.isDateTimeAvailAble!;
+        showDateRange = "${result.startDate} To ${result.endDate}";
+        showTimeRange = "${result.startTime} To ${result.endTime}";
+        isDateTimeAvailable = result.isDateTimeAvailAble!;
       });
     }
   }
@@ -545,8 +452,8 @@ class _MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryVali
 
     if(result != null){
       setState(() {
-        widget.isClientDetailsAvailable = true;
-        widget.isCareTypeAvailable = false;
+        isClientDetailsAvailable = true;
+        isCareTypeAvailable = false;
         clientName = result.name!;
         clientGender = result.gender!;
         clientAge = result.age!;

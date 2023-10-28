@@ -1,15 +1,20 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peaceworc_agency/bloc/job_bloc.dart';
+import 'package:peaceworc_agency/bloc/job_state.dart';
 import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 import 'package:peaceworc_agency/ui/job_post/OptionalScreen.dart';
 
 class JobPostScreen extends StatefulWidget {
   const JobPostScreen({super.key});
 
+
   @override
   State<JobPostScreen> createState() => _JobPostScreenState();
+
 
 }
 
@@ -17,6 +22,7 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
   final mandatoryScreen = MandatoryScreen();
   int _activeStepIndex = 0;
   bool isLast = false;
+  bool isValid = false;
 
   List<Step> stepList() => [
      Step(
@@ -51,69 +57,85 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
 
   @override
   Widget build(BuildContext context) {
+    final jobBloc = context.read<JobBloc>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Post Job", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
       ),
-      body: Stepper(
-        elevation: 0,
-        type: StepperType.horizontal,
-        currentStep: _activeStepIndex,
-        steps: stepList(),
-        onStepContinue: (){
-          print(_activeStepIndex);
+      body: BlocBuilder<JobBloc, JobState>(
+        builder: (context, state){
 
-          if(_activeStepIndex < (stepList().length-1)){
+          return Stepper(
+            elevation: 0,
+            type: StepperType.horizontal,
+            currentStep: _activeStepIndex,
+            steps: stepList(),
+            onStepContinue: (){
+              print(_activeStepIndex);
+
+              if(_activeStepIndex < (stepList().length-1)){
+                setState(() {
+                  _activeStepIndex += 1;
+                  isLast = _activeStepIndex == 2;
+                });
+              }
+            },
+            onStepCancel: (){
+              if(_activeStepIndex == 0){
+                return;
+              }
               setState(() {
-                _activeStepIndex += 1;
-                isLast = _activeStepIndex == 2;
+                _activeStepIndex -= 1;
               });
-          }
+            },
+            controlsBuilder: (BuildContext context, ControlsDetails details) {
+              if(isLast == false){
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: TextButton(
+                      onPressed: (){
+                        /*if(state is MyDataState){
+
+                          if(state.title != null && state.title.isNotEmpty){
+                            print('Value ${state?.title}');
+                          }else{
+                            print("Please fill the required field");
+                          }
+                        }*/
+
+                        //mandatoryScreen.checkValidation();
+                        details.onStepContinue;
+                      },
+                      child: const Text('Next Step >', style: TextStyle(color: Colors.white),),
+                    ),
+                  ),
+                );
+              }else{
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Save', style: TextStyle(color: Colors.white),),
+                    ),
+                  ),
+                );
+              }
+            },
+          );
         },
-        onStepCancel: (){
-            if(_activeStepIndex == 0){
-              return;
-            }
-            setState(() {
-              _activeStepIndex -= 1;
-            });
-        },
-        controlsBuilder: (BuildContext context, ControlsDetails details) {
-          if(isLast == false){
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextButton(
-                  onPressed: (){
-                    mandatoryScreen.checkValidation();
-                    //details.onStepContinue;
-                  },
-                  child: const Text('Next Step >', style: TextStyle(color: Colors.white),),
-                ),
-              ),
-            );
-          }else{
-            return Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: TextButton(
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Save', style: TextStyle(color: Colors.white),),
-                ),
-              ),
-            );
-          }
-        },
+
       )
     );
   }

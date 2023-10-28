@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peaceworc_agency/bloc/job_bloc.dart';
 import 'package:peaceworc_agency/ui/SplashScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      
+      const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,14 +15,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Peaceworc Agency',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => JobBloc())
+      ],
+      child: MaterialApp(
+        title: 'Peaceworc Agency',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+          useMaterial3: true,
+        ),
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen()
       ),
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen()
     );
   }
 }
