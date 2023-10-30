@@ -18,8 +18,4 @@ class JobBloc extends Bloc<JobEvent, JobState>{
       emit(MyDataState(event.title));
     });
   }
-
-
-
-
 }
