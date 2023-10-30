@@ -11,11 +11,8 @@ import 'package:peaceworc_agency/ui/job_post/OptionalScreen.dart';
 class JobPostScreen extends StatefulWidget {
   const JobPostScreen({super.key});
 
-
   @override
   State<JobPostScreen> createState() => _JobPostScreenState();
-
-
 }
 
 class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidationMixin {
@@ -99,18 +96,26 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
                     ),
                     child: TextButton(
                       onPressed: (){
-                        /*if(state is MyDataState){
+                        //details.onStepContinue;
+                        if(_activeStepIndex < (stepList().length-1)){
+                          setState(() {
+                            _activeStepIndex += 1;
+                            isLast = _activeStepIndex == 2;
+                          });
+                        }
+                      },
+                      /*onPressed: (){
+                        *//*if(state is MyDataState){
 
                           if(state.title != null && state.title.isNotEmpty){
                             print('Value ${state?.title}');
                           }else{
                             print("Please fill the required field");
                           }
-                        }*/
+                        }*//*
 
                         //mandatoryScreen.checkValidation();
-                        details.onStepContinue;
-                      },
+                      },*/
                       child: const Text('Next Step >', style: TextStyle(color: Colors.white),),
                     ),
                   ),
@@ -135,7 +140,6 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
             },
           );
         },
-
       )
     );
   }

@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/get_post_job_bloc.dart';
+import 'package:peaceworc_agency/helper/LifeCycleWatcherState.dart';
 import 'package:peaceworc_agency/model/post_job/get_post_job_response.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobCard.dart';
+import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PostJobListScreen extends StatefulWidget {
@@ -20,6 +22,14 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
     getJob();
     getJobListener();
     super.initState();
+
+    WidgetsBinding.instance.addObserver(
+        LifecycleEventHandler(resumeCallBack: () async => setState(() {
+          print("Hello Resumed......");
+          getJob();
+          getJobListener();
+        }),
+    ));
   }
 
   void getJob(){
@@ -74,7 +84,16 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
                       itemCount: snapshot.data!.data!.data!.length,
                       itemBuilder: (context, index){
                         Datum _data = snapshot.data!.data!.data![index];
-                        return PostJobCard(data: _data,);
+                        return PostJobCard(data: _data, onTap: () async{
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PostJobDetailsScreen()),
+                          );
+
+                          if (!mounted) return;
+                          getJob();
+                          getJobListener();
+                        },);
                       });
                 }else{
                   return _noDataLay();

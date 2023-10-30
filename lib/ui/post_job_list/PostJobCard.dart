@@ -4,13 +4,12 @@ import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
 
 class PostJobCard extends StatelessWidget {
   final Datum data;
-  PostJobCard({required this.data});
+  final Function()? onTap;
+  PostJobCard({super.key, required this.data, this.onTap});
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PostJobDetailsScreen()));
-      },
+    return GestureDetector(
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: Card(

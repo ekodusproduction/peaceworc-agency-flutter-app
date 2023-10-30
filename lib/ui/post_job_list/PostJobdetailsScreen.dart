@@ -21,7 +21,9 @@ class _PostJobDetailsScreenState extends State<PostJobDetailsScreen> {
         title: Text("Post Job Details", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(Icons.delete_outline, color: Colors.black,),
           ),
         ],
