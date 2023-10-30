@@ -64,7 +64,6 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
           controller: jobTitle,
           onChanged: (content){
            BlocProvider.of<JobBloc>(context).add(OnChangeJobEvent(title: content));
-            //jobTitleText = content;
           },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
@@ -83,6 +82,9 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
         ),
         TextFormField(
           controller: jobDesc,
+          onChanged: (content){
+            BlocProvider.of<JobBloc>(context).add(OnChangeDescEvent(jobDesc: content));
+          },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Job description & responsibilities',

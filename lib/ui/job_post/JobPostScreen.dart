@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:peaceworc_agency/bloc/job_bloc.dart';
+import 'package:peaceworc_agency/bloc/job_event.dart';
 import 'package:peaceworc_agency/bloc/job_state.dart';
 import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 import 'package:peaceworc_agency/ui/job_post/OptionalScreen.dart';
@@ -57,6 +58,12 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
     final jobBloc = context.read<JobBloc>();
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: (){
+            BlocProvider.of<JobBloc>(context).add(OnChangeJobEvent(title: ''));
+            Navigator.pop(context);
+          },
+        ),
         title: Text("Post Job", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
       ),
       body: BlocBuilder<JobBloc, JobState>(
@@ -96,26 +103,39 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
                     ),
                     child: TextButton(
                       onPressed: (){
-                        //details.onStepContinue;
-                        if(_activeStepIndex < (stepList().length-1)){
-                          setState(() {
-                            _activeStepIndex += 1;
-                            isLast = _activeStepIndex == 2;
-                          });
-                        }
-                      },
-                      /*onPressed: (){
-                        *//*if(state is MyDataState){
+                        if(state is MyDataState){
 
                           if(state.title != null && state.title.isNotEmpty){
-                            print('Value ${state?.title}');
+                            print(state.title);
+                            if(_activeStepIndex < (stepList().length-1)){
+                              setState(() {
+                                _activeStepIndex += 1;
+                                isLast = _activeStepIndex == 2;
+                              });
+                            }
                           }else{
-                            print("Please fill the required field");
+                            Fluttertoast.showToast(
+                                msg: "Job title is required.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
                           }
-                        }*//*
-
-                        //mandatoryScreen.checkValidation();
-                      },*/
+                        }else{
+                          Fluttertoast.showToast(
+                              msg: "Job title is required.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }
+                      },
                       child: const Text('Next Step >', style: TextStyle(color: Colors.white),),
                     ),
                   ),
