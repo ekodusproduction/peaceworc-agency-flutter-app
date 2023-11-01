@@ -1,28 +1,22 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'package:peaceworc_agency/bloc/job_bloc.dart';
-import 'package:peaceworc_agency/bloc/job_event.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
-import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
+import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
-import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
+import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/model/search_client/search_client_response.dart' as seachClient;
+import '../components/type_of_care_bottomsheet.dart';
 
-class MandatoryScreen extends StatefulWidget {
-  String test = '';
-  MandatoryScreen({super.key});
+class JobPreviewScreen extends StatefulWidget {
+  const JobPreviewScreen({super.key});
+
   @override
-  State<MandatoryScreen> createState() => MandatoryScreenState();
-
+  State<JobPreviewScreen> createState() => _JobPreviewScreenState();
 }
 
-class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValidationMixin{
-  TextEditingController jobTitle = TextEditingController();
+class _JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryValidationMixin{
+  late TextEditingController jobTitle;
   TextEditingController jobDesc = TextEditingController();
   TextEditingController remittance = TextEditingController();
 
@@ -31,70 +25,24 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
   bool isDateTimeAvailable = false;
   bool? isClientDetailsAvailable = false;
 
-  static String street = "";
-  static String description = "";
-  static String place = "";
-  static String city = "";
-  static String state = "";
-  static String? careType = "";
-  static String careTypeTxt = "Select Care Type";
-  static String showDateRange = '';
-  static String showTimeRange = '';
-  static String jobTitleText = "";
-  static String jobDescText = "";
-  static String jobRemittanceText = "";
+
+  static String prevStreet = "";
+  static String prevDescription = "";
+  static String prevPlace = "";
+  static String prevCity = "";
+  static String prevState = "";
+  static String? prevCareType = "";
+  static String prevCareTypeTxt = "Select Care Type";
+  static String prevShowDateRange = '';
+  static String prevShowTimeRange = '';
+  static String prevTitle = "";
+  static String prevDesc = "";
+  static String prevJobRemittanceText = "";
 
   //client details
-  static String clientName = '';
-  static String clientAge = '';
-  static String clientGender = '';
-
-  static String checkValidation(){
-    if(jobTitleText.isNotEmpty){
-      if(jobDescText.isNotEmpty){
-        if(careType != null && careType!.isNotEmpty){
-          if(clientName.isNotEmpty && clientName != null){
-            if(showDateRange.isNotEmpty && showDateRange != null){
-              if(jobRemittanceText.isNotEmpty){
-                if(street.isNotEmpty && street != null){
-                  return '';
-                }else{
-                  return 'Address is required.';
-                }
-              }else{
-                return 'Remittance is required.';
-              }
-            }else{
-              return 'Select date and time.';
-            }
-          }else{
-            return 'Add a client.';
-          }
-        }else{
-          return 'Select a care type.';
-        }
-      }else{
-        return 'Job description is required.';
-      }
-    }else{
-      return 'Job title is required.';
-    }
-  }
-
-  static void clearVariable(){
-    street = "";
-    description = "";
-    place = "";
-    city = "";
-    state = "";
-    careType = "";
-    careTypeTxt = "Select Care Type";
-    showDateRange = '';
-    showTimeRange = '';
-    jobTitleText = "";
-    jobDescText = "";
-    jobRemittanceText = "";
-  }
+  static String prevClientName = '';
+  static String prevClientAge = '';
+  static String prevClientGender = '';
 
   @override
   void initState() {
@@ -103,16 +51,20 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      prevTitle = MandatoryScreenState.jobTitleText;
+      jobTitle = new TextEditingController(text: prevTitle);
+    });
     return Flex(
       direction: Axis.vertical,
       children: [
-        Align(alignment: Alignment.centerLeft,child: Text("Job Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
+        Align(alignment: Alignment.centerLeft,child: Text("Job Information ${prevTitle}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),)),
         SizedBox(height: 8.0,),
         TextFormField(
           controller: jobTitle,
           onChanged: (content){
-           //BlocProvider.of<JobBloc>(context).add(OnChangeJobEvent(title: content));
-            jobTitleText = content;
+            prevTitle = content;
+            print(prevTitle);
           },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
@@ -132,8 +84,7 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
         TextFormField(
           controller: jobDesc,
           onChanged: (content){
-            //BlocProvider.of<JobBloc>(context).add(OnChangeDescEvent(jobDesc: content));
-            jobDescText = content;
+            prevDesc = content;
           },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
@@ -168,7 +119,7 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
                       children: [
                         Icon(Icons.add_circle_outline_outlined, color: Colors.white,),
                         SizedBox(width: 10.0,),
-                        Text(careTypeTxt, style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
+                        Text(prevCareTypeTxt, style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.bold),),
                       ],
                     ),
                     Icon(Icons.arrow_forward_ios, color: Colors.white,)
@@ -241,28 +192,28 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(clientName, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                            Text(prevClientName, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                             SizedBox(width: 10,),
-                            Text('age: ${clientAge} years', style: TextStyle(color: Colors.black),)
+                            Text('age: ${prevClientAge} years', style: TextStyle(color: Colors.black),)
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(careType!, style: TextStyle(color: Colors.black),),
+                            Text(prevCareType!, style: TextStyle(color: Colors.black),),
                             SizedBox(width: 10,),
-                            Text(clientGender, style: TextStyle(color: Colors.black),),
+                            Text(prevClientGender, style: TextStyle(color: Colors.black),),
                           ],
                         )
                       ],
                     ),
                       InkWell(
-                        onTap: (){
-                          setState(() {
-                            isClientDetailsAvailable = false;
-                            isCareTypeAvailable = true;
-                          });
-                        },
+                          onTap: (){
+                            setState(() {
+                              isClientDetailsAvailable = false;
+                              isCareTypeAvailable = true;
+                            });
+                          },
                           child: Icon(Icons.cancel_outlined, color: Colors.black,)
                       )
                     ],
@@ -296,9 +247,9 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(showDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(prevShowDateRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                               SizedBox(height: 5),
-                              Text(showTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
+                              Text(prevShowTimeRange, style: TextStyle(color: Colors.black, fontSize: 13,fontWeight: FontWeight.bold),),
                             ],
                           )
                         ],
@@ -330,7 +281,7 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
         TextFormField(
           controller: remittance,
           onChanged: (content){
-            jobRemittanceText = content;
+            prevJobRemittanceText = content;
           },
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
@@ -391,14 +342,14 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(place, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
-                  Text(description, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
+                  Text(prevPlace, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13),),
+                  Text(prevDescription, style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Divider(
                     thickness: 0.5,
                     color: Colors.grey[600],
                   ),
                   Text("Street name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
-                  Text(street, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                  Text(prevStreet, style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                   SizedBox(height: 4,),
                   Text("Apartment name/number:", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
                   Text("", style: TextStyle(fontSize: 13, color: Colors.grey[800]),),
@@ -410,7 +361,7 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
           visible: isAddressAvail,
         ),
         const SizedBox(
-          height: 20
+            height: 20
         ),
       ],
     );
@@ -425,13 +376,13 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
     if (!mounted) return;
 
     if(result != null){
-      street = result.street!;
-      description = result.description!;
-      place = result.place!;
-      city = result.city!;
-      state = result.state!;
+      prevStreet = result.street!;
+      prevDescription = result.description!;
+      prevPlace = result.place!;
+      prevCity = result.city!;
+      prevState = result.state!;
     }
-    _navigateToBottomSheet(context, street, city, state);
+    _navigateToBottomSheet(context, prevStreet, prevCity, prevState);
   }
 
   Future<void> _navigateToTypeOfCare(BuildContext context) async {
@@ -446,15 +397,15 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
 
     if(result != null){
       setState(() {
-        careType = result?.careType;
+        prevCareType = result?.careType;
         if(result?.isClientVisible != null){
           isCareTypeAvailable = result?.isClientVisible;
         }else{
           isCareTypeAvailable = false;
         }
-        if(careType != null){
-          if(careType!.isNotEmpty){
-            careTypeTxt = careType!;
+        if(prevCareType != null){
+          if(prevCareType!.isNotEmpty){
+            prevCareTypeTxt = prevCareType!;
           }
         }
       });
@@ -489,8 +440,8 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
 
     if(result != null){
       setState(() {
-        showDateRange = "${result.startDate} To ${result.endDate}";
-        showTimeRange = "${result.startTime} To ${result.endTime}";
+        prevShowDateRange = "${result.startDate} To ${result.endDate}";
+        prevShowTimeRange = "${result.startTime} To ${result.endTime}";
         isDateTimeAvailable = result.isDateTimeAvailAble!;
       });
     }
@@ -508,26 +459,10 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
       setState(() {
         isClientDetailsAvailable = true;
         isCareTypeAvailable = false;
-        clientName = result.name!;
-        clientGender = result.gender!;
-        clientAge = result.age!;
+        prevClientName = result.name!;
+        prevClientGender = result.gender!;
+        prevClientAge = result.age!;
       });
     }
-  }
-}
-
-
-mixin jobMendatoryValidationMixin{
-  String isTitleValidate(String value){
-    if(value.isEmpty){
-      return "Name is required";
-    }
-    return "";
-  }
-  String isDescValidate(String value){
-    if(value.isEmpty){
-      return "Job description is required";
-    }
-    return "";
   }
 }

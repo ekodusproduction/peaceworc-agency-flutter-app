@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 class OptionalScreen extends StatefulWidget {
   const OptionalScreen({super.key});
 
@@ -16,6 +18,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
   final List<String> _jobExperties = <String>[];
   final List<String> _otherRequirements = <String>[];
   final List<String> _checkList = <String>[];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -14,8 +14,12 @@ class DataEvent {
 }
 class JobBloc extends Bloc<JobEvent, JobState>{
   JobBloc():super(JobInitialState()){
-    on<OnChangeJobEvent>((OnChangeJobEvent event, Emitter<JobState> emit){
-      emit(MyDataState(event.title));
+    on<OnChangeJobTitleEvent>((OnChangeJobTitleEvent event, Emitter<JobState> emit){
+      emit(JobTitleStateState(event.title));
+    });
+
+    on<OnChangeDescEvent>((OnChangeDescEvent event, Emitter<JobState> emit){
+      emit(JobDescStateState(event.jobDesc));
     });
   }
 }

@@ -8,6 +8,7 @@ import 'package:peaceworc_agency/bloc/job_event.dart';
 import 'package:peaceworc_agency/bloc/job_state.dart';
 import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
 import 'package:peaceworc_agency/ui/job_post/OptionalScreen.dart';
+import 'package:peaceworc_agency/ui/job_post/job_preview_screen.dart';
 
 class JobPostScreen extends StatefulWidget {
   const JobPostScreen({super.key});
@@ -21,6 +22,15 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
   int _activeStepIndex = 0;
   bool isLast = false;
   bool isValid = false;
+
+  void continueStep(){
+    if(_activeStepIndex < (stepList().length-1)){
+      setState(() {
+        _activeStepIndex += 1;
+        isLast = _activeStepIndex == 2;
+      });
+    }
+  }
 
   List<Step> stepList() => [
      Step(
@@ -43,12 +53,7 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
         title: const Text(""),
         label: Text("Preview", style: TextStyle(fontSize: 12)),
         content: SingleChildScrollView(
-          child: Column(
-            children: [
-              MandatoryScreen(),
-              OptionalScreen()
-            ],
-          ),
+          child: JobPreviewScreen()
         )
     ),
   ];
@@ -60,7 +65,6 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
       appBar: AppBar(
         leading: BackButton(
           onPressed: (){
-            BlocProvider.of<JobBloc>(context).add(OnChangeJobEvent(title: ''));
             Navigator.pop(context);
           },
         ),
@@ -103,30 +107,11 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
                     ),
                     child: TextButton(
                       onPressed: (){
-                        if(state is MyDataState){
-
-                          if(state.title != null && state.title.isNotEmpty){
-                            print(state.title);
-                            if(_activeStepIndex < (stepList().length-1)){
-                              setState(() {
-                                _activeStepIndex += 1;
-                                isLast = _activeStepIndex == 2;
-                              });
-                            }
-                          }else{
-                            Fluttertoast.showToast(
-                                msg: "Job title is required.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            );
-                          }
+                        if(MandatoryScreenState.checkValidation().isEmpty){
+                          continueStep();
                         }else{
                           Fluttertoast.showToast(
-                              msg: "Job title is required.",
+                              msg: MandatoryScreenState.checkValidation(),
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
@@ -162,5 +147,11 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
         },
       )
     );
+  }
+
+  @override
+  void dispose() {
+    MandatoryScreenState.clearVariable();
+    super.dispose();
   }
 }
