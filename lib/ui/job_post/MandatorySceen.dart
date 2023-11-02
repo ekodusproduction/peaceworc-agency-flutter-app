@@ -81,7 +81,7 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
     }
   }
 
-  static void clearVariable(){
+  static void clearManVariable(){
     street = "";
     description = "";
     place = "";

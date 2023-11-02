@@ -151,7 +151,9 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
 
   @override
   void dispose() {
-    MandatoryScreenState.clearVariable();
+    MandatoryScreenState.clearManVariable();
+    OptionalScreenState.clearOptVariable();
+    JobPreviewScreenState.clearJobRevVariable();
     super.dispose();
   }
 }

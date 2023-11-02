@@ -13,10 +13,10 @@ class JobPreviewScreen extends StatefulWidget {
   const JobPreviewScreen({super.key});
 
   @override
-  State<JobPreviewScreen> createState() => _JobPreviewScreenState();
+  State<JobPreviewScreen> createState() => JobPreviewScreenState();
 }
 
-class _JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryValidationMixin{
+class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryValidationMixin{
   late TextEditingController jobTitle;
   late TextEditingController jobDesc;
   late TextEditingController remittance;
@@ -53,6 +53,31 @@ class _JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVa
   static List<String> jobExpertiesList = <String>[];
   static List<String> otherRequirementsList = <String>[];
   static List<String> checkListList = <String>[];
+
+  static void clearJobRevVariable(){
+    prevStreet = "";
+    prevDescription = "";
+    prevPlace = "";
+    prevCity = "";
+    prevState = "";
+    prevCareType = "";
+    prevCareTypeTxt = "Select Care Type";
+    prevShowDateRange = '';
+    prevShowTimeRange = '';
+    prevTitle = "";
+    prevDesc = "";
+    prevJobRemittanceText = "";
+
+    //client details
+    prevClientName = '';
+    prevClientAge = '';
+    prevClientGender = '';
+
+    medicalList = <String>[];
+    jobExpertiesList = <String>[];
+    otherRequirementsList = <String>[];
+    checkListList = <String>[];
+  }
 
   @override
   void initState() {

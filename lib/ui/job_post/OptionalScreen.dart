@@ -19,6 +19,13 @@ class OptionalScreenState extends State<OptionalScreen> {
   static List<String> otherRequirementsList = <String>[];
   static List<String> checkListList = <String>[];
 
+  static void clearOptVariable(){
+    medicalList = <String>[];
+    jobExpertiesList = <String>[];
+    otherRequirementsList = <String>[];
+    checkListList = <String>[];
+  }
+
   @override
   void initState() {
     super.initState();
