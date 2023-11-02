@@ -5,19 +5,19 @@ class OptionalScreen extends StatefulWidget {
   const OptionalScreen({super.key});
 
   @override
-  State<OptionalScreen> createState() => _OptionalScreenState();
+  State<OptionalScreen> createState() => OptionalScreenState();
 }
 
-class _OptionalScreenState extends State<OptionalScreen> {
+class OptionalScreenState extends State<OptionalScreen> {
   TextEditingController medicalHistory = TextEditingController();
   TextEditingController jobExperties = TextEditingController();
   TextEditingController otherRequirements = TextEditingController();
   TextEditingController checkList = TextEditingController();
 
-  final List<String> _medicalList = <String>[];
-  final List<String> _jobExperties = <String>[];
-  final List<String> _otherRequirements = <String>[];
-  final List<String> _checkList = <String>[];
+  static List<String> medicalList = <String>[];
+  static List<String> jobExpertiesList = <String>[];
+  static List<String> otherRequirementsList = <String>[];
+  static List<String> checkListList = <String>[];
 
   @override
   void initState() {
@@ -41,8 +41,9 @@ class _OptionalScreenState extends State<OptionalScreen> {
               children: [
                 Text("Medical history(if any)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                 ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount: _medicalList.length,
+                    itemCount: medicalList.length,
                     itemBuilder: (context, index){
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -56,11 +57,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_medicalList[index]),
+                                Text(medicalList[index]),
                                 InkWell(
                                     onTap: (){
                                       setState(() {
-                                        _medicalList.removeAt(index);
+                                        medicalList.removeAt(index);
                                       });
                                     },
                                     child: Text("Remove",)
@@ -86,7 +87,7 @@ class _OptionalScreenState extends State<OptionalScreen> {
                           onPressed:(){
                             setState(() {
                               if(medicalHistory.text.isNotEmpty){
-                                _medicalList.add(medicalHistory.text);
+                                medicalList.add(medicalHistory.text);
                                 medicalHistory.clear();
                               }else{
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -117,8 +118,9 @@ class _OptionalScreenState extends State<OptionalScreen> {
               children: [
                 Text("Job experties skill(s) required", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                 ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount: _jobExperties.length,
+                    itemCount: jobExpertiesList.length,
                     itemBuilder: (context, index){
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -132,11 +134,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_jobExperties[index]),
+                                Text(jobExpertiesList[index]),
                                 InkWell(
                                     onTap: (){
                                       setState(() {
-                                        _jobExperties.removeAt(index);
+                                        jobExpertiesList.removeAt(index);
                                       });
                                     },
                                     child: Text("Remove",)
@@ -162,7 +164,7 @@ class _OptionalScreenState extends State<OptionalScreen> {
                           onPressed:(){
                             setState(() {
                               if(jobExperties.text.isNotEmpty){
-                                _jobExperties.add(jobExperties.text);
+                                jobExpertiesList.add(jobExperties.text);
                                 jobExperties.clear();
                               }else{
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -193,8 +195,9 @@ class _OptionalScreenState extends State<OptionalScreen> {
               children: [
                 Text("Other requirements", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                 ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount: _otherRequirements.length,
+                    itemCount: otherRequirementsList.length,
                     itemBuilder: (context, index){
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -208,11 +211,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_otherRequirements[index]),
+                                Text(otherRequirementsList[index]),
                                 InkWell(
                                     onTap: (){
                                       setState(() {
-                                        _otherRequirements.removeAt(index);
+                                        otherRequirementsList.removeAt(index);
                                       });
                                     },
                                     child: Text("Remove",)
@@ -238,7 +241,7 @@ class _OptionalScreenState extends State<OptionalScreen> {
                           onPressed:(){
                             setState(() {
                               if(otherRequirements.text.isNotEmpty){
-                                _otherRequirements.add(otherRequirements.text);
+                                otherRequirementsList.add(otherRequirements.text);
                                 otherRequirements.clear();
                               }else{
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -269,8 +272,9 @@ class _OptionalScreenState extends State<OptionalScreen> {
               children: [
                 Text("Caregiver checklist", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                 ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount: _checkList.length,
+                    itemCount: checkListList.length,
                     itemBuilder: (context, index){
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -284,11 +288,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_checkList[index]),
+                                Text(checkListList[index]),
                                 InkWell(
                                     onTap: (){
                                       setState(() {
-                                        _checkList.removeAt(index);
+                                        checkListList.removeAt(index);
                                       });
                                     },
                                     child: Text("Remove",)
@@ -314,7 +318,7 @@ class _OptionalScreenState extends State<OptionalScreen> {
                           onPressed:(){
                             setState(() {
                               if(checkList.text.isNotEmpty){
-                                _checkList.add(checkList.text);
+                                checkListList.add(checkList.text);
                                 checkList.clear();
                               }else{
                                 ScaffoldMessenger.of(context).showSnackBar(

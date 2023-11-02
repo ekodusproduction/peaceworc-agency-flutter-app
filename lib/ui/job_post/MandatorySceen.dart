@@ -26,10 +26,10 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
   TextEditingController jobDesc = TextEditingController();
   TextEditingController remittance = TextEditingController();
 
-  bool isAddressAvail = false;
-  bool? isCareTypeAvailable = false;
-  bool isDateTimeAvailable = false;
-  bool? isClientDetailsAvailable = false;
+  static bool isAddressAvail = false;
+  static bool? isCareTypeAvailable = false;
+  static bool isDateTimeAvailable = false;
+  static bool? isClientDetailsAvailable = false;
 
   static String street = "";
   static String description = "";
@@ -94,6 +94,15 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
     jobTitleText = "";
     jobDescText = "";
     jobRemittanceText = "";
+
+    clientName = '';
+    clientAge = '';
+    clientGender = '';
+
+    isAddressAvail = false;
+    isCareTypeAvailable = false;
+    isDateTimeAvailable = false;
+    isClientDetailsAvailable = false;
   }
 
   @override
