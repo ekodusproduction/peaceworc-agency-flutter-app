@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:peaceworc_agency/bloc/job_bloc.dart';
 import 'package:peaceworc_agency/bloc/job_event.dart';
+import 'package:peaceworc_agency/model/create_job/client_info_model.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
 import 'package:peaceworc_agency/ui/components/type_of_care_bottomsheet.dart';
@@ -48,6 +49,10 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
   static String clientName = '';
   static String clientAge = '';
   static String clientGender = '';
+  static String clientId = '';
+
+  static List<ClientInfoModel> clientInfoList = <ClientInfoModel>[];
+
 
   static String checkValidation(){
     if(jobTitleText.isNotEmpty){
@@ -98,11 +103,14 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
     clientName = '';
     clientAge = '';
     clientGender = '';
+    clientId  = '';
 
     isAddressAvail = false;
     isCareTypeAvailable = false;
     isDateTimeAvailable = false;
     isClientDetailsAvailable = false;
+
+    clientInfoList = <ClientInfoModel>[];
   }
 
   @override
@@ -520,6 +528,13 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
         clientName = result.name!;
         clientGender = result.gender!;
         clientAge = result.age!;
+        clientId = result.id.toString();
+        final data = ClientInfoModel(
+            gender: clientGender,
+            age: clientAge,
+            patient_name: clientName
+        );
+        clientInfoList.add(data);
       });
     }
   }

@@ -79,8 +79,6 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
             currentStep: _activeStepIndex,
             steps: stepList(),
             onStepContinue: (){
-              print(_activeStepIndex);
-
               if(_activeStepIndex < (stepList().length-1)){
                 setState(() {
                   _activeStepIndex += 1;
@@ -135,7 +133,7 @@ class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidati
                     ),
                     child: TextButton(
                       onPressed: (){
-                        Navigator.of(context).pop();
+                        JobPreviewScreenState.createJob();
                       },
                       child: const Text('Save', style: TextStyle(color: Colors.white),),
                     ),

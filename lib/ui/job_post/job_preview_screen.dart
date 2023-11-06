@@ -7,6 +7,8 @@ import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/model/search_client/search_client_response.dart' as seachClient;
+import '../../bloc/create_job_bloc.dart';
+import '../../model/create_job/client_info_model.dart';
 import '../components/type_of_care_bottomsheet.dart';
 
 class JobPreviewScreen extends StatefulWidget {
@@ -30,6 +32,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
   bool? isCareTypeAvailable = false;
   bool isDateTimeAvailable = false;
   bool? isClientDetailsAvailable = false;
+  bool isLoading = false;
 
   static String prevStreet = "";
   static String prevDescription = "";
@@ -48,11 +51,13 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
   static String prevClientName = '';
   static String prevClientAge = '';
   static String prevClientGender = '';
+  static String prevClientId = '';
 
   static List<String> medicalList = <String>[];
   static List<String> jobExpertiesList = <String>[];
   static List<String> otherRequirementsList = <String>[];
   static List<String> checkListList = <String>[];
+  static List<ClientInfoModel> clientInfoList = <ClientInfoModel>[];
 
   static void clearJobRevVariable(){
     prevStreet = "";
@@ -72,6 +77,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
     prevClientName = '';
     prevClientAge = '';
     prevClientGender = '';
+    prevClientId = '';
 
     medicalList = <String>[];
     jobExpertiesList = <String>[];
@@ -79,8 +85,43 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
     checkListList = <String>[];
   }
 
+  void createJobListener() {
+    setState(() {
+      isLoading = true;
+    });
+    createJobBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          Navigator.of(context).pop();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
+  static void createJob(){
+    createJobBloc.createJob(
+      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-06-2023", "11-06-2023",
+      "13:00:00", "15:00:00", prevJobRemittanceText, "new york", "description", medicalList, jobExpertiesList, otherRequirementsList,
+      checkListList, "benstand street", "91.00000", "91.0000", "street 37", "boston", "LA", "12345", "",
+      "",
+      "usa",
+    );
+  }
+
   @override
   void initState() {
+    createJobListener();
     super.initState();
   }
 
@@ -104,11 +145,13 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
       prevClientName = MandatoryScreenState.clientName;
       prevClientAge = MandatoryScreenState.clientAge;
       prevClientGender = MandatoryScreenState.clientGender;
+      prevClientId = MandatoryScreenState.clientId;
 
       isAddressAvail = MandatoryScreenState.isAddressAvail;
       isCareTypeAvailable = MandatoryScreenState.isCareTypeAvailable;
       isDateTimeAvailable = MandatoryScreenState.isDateTimeAvailable;
       isClientDetailsAvailable = MandatoryScreenState.isClientDetailsAvailable;
+      clientInfoList = MandatoryScreenState.clientInfoList;
 
       medicalList = OptionalScreenState.medicalList;
       jobExpertiesList = OptionalScreenState.jobExpertiesList;
