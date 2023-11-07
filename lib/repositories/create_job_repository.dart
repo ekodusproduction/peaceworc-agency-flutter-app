@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:peaceworc_agency/api/api_client.dart';
 import 'package:peaceworc_agency/api/api_links.dart';
 import 'package:peaceworc_agency/model/create_job/create_job.dart';
 import 'package:dio/dio.dart';
-
+import 'dart:developer';
 import '../model/create_job/client_info_model.dart';
 
 class CreateJobRepository{
@@ -36,11 +38,12 @@ class CreateJobRepository{
     CreateJobResponse _searchClient;
     final _apiClient = ApiClient.httpWithToken();
     try {
+      print("medical his => ${jsonEncode(json.decode(json.encoder.convert(medical_history).replaceAll(r"\'", "'")))}");
       Response response = await _apiClient!.post('${ApiLinks.createJob}', queryParameters: {
         'client_id' : client_id,
         'title' : title,
         'care_type' : care_type,
-        'care_items' : care_items,
+        'care_items' : json.decode(json.encoder.convert(care_items).replaceAll(r"\'", "'")),
         'start_date' : start_date,
         'end_date' : end_date,
         'start_time' : start_time,
@@ -48,7 +51,7 @@ class CreateJobRepository{
         'amount' : amount,
         'address' : address,
         'description' : description,
-        'medical_history' : medical_history,
+        'medical_history' : jsonEncode(json.decode(json.encoder.convert(medical_history).replaceAll(r"\'", "'"))),
         'expertise' : expertise,
         'other_requirements' : other_requirements,
         'check_list' : check_list,

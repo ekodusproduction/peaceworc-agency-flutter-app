@@ -95,7 +95,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
       });
       if(value.error == null){
         if (value.success == true) {
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
@@ -111,8 +111,8 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
 
   static void createJob(){
     createJobBloc.createJob(
-      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-06-2023", "11-06-2023",
-      "13:00:00", "15:00:00", prevJobRemittanceText, "new york", "description", medicalList, jobExpertiesList, otherRequirementsList,
+      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-07-2023", "11-07-2023",
+      "21:00:00", "22:00:00", prevJobRemittanceText, "new york", "description", medicalList, jobExpertiesList, otherRequirementsList,
       checkListList, "benstand street", "91.00000", "91.0000", "street 37", "boston", "LA", "12345", "",
       "",
       "usa",
@@ -876,5 +876,11 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
         prevClientAge = result.age!;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    createJobBloc.dispose();
+    super.dispose();
   }
 }

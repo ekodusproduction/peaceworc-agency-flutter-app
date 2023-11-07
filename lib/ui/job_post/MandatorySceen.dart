@@ -529,17 +529,19 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
         clientGender = result.gender!;
         clientAge = result.age!;
         clientId = result.id.toString();
+
         final data = ClientInfoModel(
             gender: clientGender,
             age: clientAge,
             patient_name: clientName
         );
         clientInfoList.add(data);
+
+        print("client list => ${clientInfoList[0].gender}");
       });
     }
   }
 }
-
 
 mixin jobMendatoryValidationMixin{
   String isTitleValidate(String value){
