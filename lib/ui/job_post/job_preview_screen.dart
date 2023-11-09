@@ -7,6 +7,7 @@ import 'package:peaceworc_agency/ui/job_post/client_select_dialoge.dart';
 import 'package:peaceworc_agency/ui/location/search_location_screen.dart';
 import 'package:peaceworc_agency/ui/job_post/data_classes.dart';
 import 'package:peaceworc_agency/model/search_client/search_client_response.dart' as seachClient;
+import 'package:peaceworc_agency/ui/payment_details_screen/payment_details_screen.dart';
 import '../../bloc/create_job_bloc.dart';
 import '../../model/create_job/client_info_model.dart';
 import '../components/type_of_care_bottomsheet.dart';
@@ -96,6 +97,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
       if(value.error == null){
         if (value.success == true) {
           //Navigator.of(context).pop();
+          _navigateToPayment(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
@@ -111,7 +113,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
 
   static void createJob(){
     createJobBloc.createJob(
-      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-07-2023", "11-07-2023",
+      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-11-2023", "11-11-2023",
       "21:00:00", "22:00:00", prevJobRemittanceText, "new york", "description", medicalList, jobExpertiesList, otherRequirementsList,
       checkListList, "benstand street", "91.00000", "91.0000", "street 37", "boston", "LA", "12345", "",
       "",
@@ -876,6 +878,13 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
         prevClientAge = result.age!;
       });
     }
+  }
+
+  void _navigateToPayment(BuildContext context){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PaymentDetailsScreen()),
+    );
   }
 
   @override
