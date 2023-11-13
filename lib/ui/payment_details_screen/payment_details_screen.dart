@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+import 'package:peaceworc_agency/payment/payment_manager.dart';
 class PaymentDetailsScreen extends StatefulWidget {
   const PaymentDetailsScreen({super.key});
 
@@ -7,6 +13,8 @@ class PaymentDetailsScreen extends StatefulWidget {
 }
 
 class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
+
+  Map<String, dynamic>? paymentIntent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,17 +62,19 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                               borderRadius: BorderRadius.circular(5.0)
                           ),
                         ),
-                        onPressed: () {
-                          final snackBar = SnackBar(
-                            content: const Text('Payment successful!'),
-                            action: SnackBarAction(
-                              label: 'ok',
-                              onPressed: () {
-                                // Some code to undo the change.
-                              },
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        onPressed: () async {
+                          await PaymentManager.makePayment(45, "USD");
+                          // final snackBar = SnackBar(
+                          //   content: const Text('Payment successful!'),
+                          //   action: SnackBarAction(
+                          //     label: 'ok',
+                          //     onPressed: () async {
+                          //       // Some code to undo the change.
+                          //
+                          //     },
+                          //   ),
+                          // );
+                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
                         child: const Text(
                           'Pay \u002445.00',
@@ -82,4 +92,60 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       ),
     );
   }
+
+
+
+
+
+
+
+
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 100.0,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text("Payment Successful!"),
+                ],
+              ),
+            ));
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: const [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+                Text("Payment Failed"),
+              ],
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+
 }
