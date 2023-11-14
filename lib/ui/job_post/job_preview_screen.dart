@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:peaceworc_agency/ui/components/address_botto_sheet.dart';
 import 'package:peaceworc_agency/ui/components/date_time_bottom_sheet.dart';
 import 'package:peaceworc_agency/ui/job_post/MandatorySceen.dart';
@@ -43,7 +44,11 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
   static String? prevCareType = "";
   static String prevCareTypeTxt = "Select Care Type";
   static String prevShowDateRange = '';
+  static String prevStartDate = '';
+  static String prevEndDate = '';
   static String prevShowTimeRange = '';
+  static String prevStartTime = '';
+  static String prevEndTime = '';
   static String prevTitle = "";
   static String prevDesc = "";
   static String prevJobRemittanceText = "";
@@ -69,7 +74,11 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
     prevCareType = "";
     prevCareTypeTxt = "Select Care Type";
     prevShowDateRange = '';
+    prevStartDate = '';
+    prevEndDate = '';
     prevShowTimeRange = '';
+    prevStartTime = '';
+    prevEndTime = '';
     prevTitle = "";
     prevDesc = "";
     prevJobRemittanceText = "";
@@ -113,12 +122,20 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
 
   static void createJob(){
     createJobBloc.createJob(
-      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, "11-11-2023", "11-11-2023",
-      "21:00:00", "22:00:00", prevJobRemittanceText, "new york", "description", medicalList, jobExpertiesList, otherRequirementsList,
-      checkListList, "benstand street", "91.00000", "91.0000", "street 37", "boston", "LA", "12345", "",
-      "",
-      "usa",
+      prevClientId, prevTitle, prevCareTypeTxt, clientInfoList, prevStartDate, prevEndDate,
+      "${convertTime(prevStartTime)}:00", "${convertTime(prevEndTime)}:00", prevJobRemittanceText, prevPlace, prevDesc, medicalList, jobExpertiesList, otherRequirementsList,
+      checkListList, prevPlace, "91.00000", "91.0000", prevStreet, prevCity, prevState, "12345", "",
+      "", "usa",
     );
+  }
+
+  static String convertTime(String time){
+    DateFormat inputFormat = DateFormat('h:mm a');
+    DateTime dateTime = inputFormat.parse(prevStartTime);
+
+    DateFormat outputFormat = DateFormat('HH:mm');
+    String outputTime = outputFormat.format(dateTime);
+    return outputTime;
   }
 
   @override
@@ -138,7 +155,11 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
       remittance = new TextEditingController(text: prevJobRemittanceText);
       prevCareTypeTxt = MandatoryScreenState.careTypeTxt;
       prevShowDateRange = MandatoryScreenState.showDateRange;
+      prevStartDate = MandatoryScreenState.startDate;
+      prevEndDate = MandatoryScreenState.endDate;
       prevShowTimeRange = MandatoryScreenState.showTimeRange;
+      prevStartTime = MandatoryScreenState.startTime;
+      prevEndTime = MandatoryScreenState.endTime;
       prevStreet = MandatoryScreenState.street;
       prevPlace = MandatoryScreenState.place;
       prevCity = MandatoryScreenState.city;

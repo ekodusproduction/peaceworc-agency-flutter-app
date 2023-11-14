@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin{
                         fontSize: 16
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: 30),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(

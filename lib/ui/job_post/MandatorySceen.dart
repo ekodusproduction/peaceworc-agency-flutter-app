@@ -40,7 +40,11 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
   static String? careType = "";
   static String careTypeTxt = "Select Care Type";
   static String showDateRange = '';
+  static String startDate = '';
+  static String endDate = '';
   static String showTimeRange = '';
+  static String startTime = '';
+  static String endTime = '';
   static String jobTitleText = "";
   static String jobDescText = "";
   static String jobRemittanceText = "";
@@ -508,6 +512,10 @@ class MandatoryScreenState extends State<MandatoryScreen> with jobMendatoryValid
       setState(() {
         showDateRange = "${result.startDate} To ${result.endDate}";
         showTimeRange = "${result.startTime} To ${result.endTime}";
+        startDate = result.startDate!;
+        endDate = result.endDate!;
+        startTime = result.startTime!;
+        endTime = result.endTime!;
         isDateTimeAvailable = result.isDateTimeAvailAble!;
       });
     }
