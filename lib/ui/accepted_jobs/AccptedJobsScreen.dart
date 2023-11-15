@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/bloc/get_upcomming_job_bloc.dart';
 import 'package:peaceworc_agency/ui/accepted_jobs/OngoingJobCard.dart';
 import 'package:peaceworc_agency/ui/accepted_jobs/UpcommingJobCard.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobCard.dart';
@@ -15,6 +16,45 @@ class _AcceptedJobsScreenState extends State<AcceptedJobsScreen> {
     "post_2",
     "post_3"
   ];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    getJob();
+    getJobListener();
+    super.initState();
+  }
+
+  void getJob(){
+    getUpommingJobBloc.getJob(0);
+  }
+
+  void getJobListener() {
+    setState(() {
+      isLoading = true;
+    });
+    getUpommingJobBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

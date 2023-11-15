@@ -22,5 +22,6 @@ class ApiLinks{
   static const String createClient = 'client/create-profile';
   static const String getClient = 'client/get-profile';
   static const String createJob = 'job/create';
+  static const String getUpcomming = 'job/accepted-job/upcoming';
 
 }
