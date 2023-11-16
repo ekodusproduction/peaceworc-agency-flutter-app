@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+import 'package:peaceworc_agency/bloc/update_payment_status_bloc.dart';
 import 'package:peaceworc_agency/payment/payment_manager.dart';
 class PaymentDetailsScreen extends StatefulWidget {
   const PaymentDetailsScreen({super.key});
@@ -13,8 +14,43 @@ class PaymentDetailsScreen extends StatefulWidget {
 }
 
 class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
-
   Map<String, dynamic>? paymentIntent;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    updatePayment();
+    updatePaymentListener();
+    super.initState();
+  }
+
+  void updatePayment(){
+    updatePaymentStatusBloc.updatePayment();
+  }
+  void updatePaymentListener() {
+    setState(() {
+      isLoading = true;
+    });
+    updatePaymentStatusBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,14 +128,6 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       ),
     );
   }
-
-
-
-
-
-
-
-
 
   displayPaymentSheet() async {
     try {

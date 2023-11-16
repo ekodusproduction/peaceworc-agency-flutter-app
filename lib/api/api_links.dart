@@ -27,4 +27,6 @@ class ApiLinks{
   static const String createJob = 'job/create';
   static const String getUpcomming = 'job/accepted-job/upcoming';
   static const String getOngoingJob = 'job/accepted-job/ongoing';
+  static const String updatePayment = 'payment/update-status';
+
 }

@@ -7,15 +7,17 @@ import 'package:peaceworc_agency/ui/post_job_list/PostJobCard.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../job_post/JobPostScreen.dart';
+
 class PostJobListScreen extends StatefulWidget {
   const PostJobListScreen({super.key});
-
   @override
   State<PostJobListScreen> createState() => _PostJobListScreenState();
 }
 
 class _PostJobListScreenState extends State<PostJobListScreen> {
   bool isLoading = false;
+  bool isJobEmpty = false;
 
   @override
   void initState() {
@@ -45,9 +47,11 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
       });
       if(value.error == null){
         if (value.success == true) {
-          /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(value.message.toString()),
-          ));*/
+          if(value.data!.data!.length == 0){
+            setState(() {
+              isJobEmpty = true;
+            });
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
@@ -64,7 +68,7 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SingleChildScrollView(
+      body: isJobEmpty ? _noDataLay() :SingleChildScrollView(
         child: isLoading ? Column(
           children: [
             SizedBox(height: 8,),
@@ -100,6 +104,7 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
             }
           },
         ),
+
       )
     );
   }
@@ -124,7 +129,36 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
   }
 
   Widget _noDataLay() {
-    return Center(child: Text("No data found.", style: TextStyle(color: Colors.black),),);
+    return Center(child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Find the right trusted caregiver for your client",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.orange.shade800,
+                borderRadius: BorderRadius.circular(5)
+            ),
+            child: TextButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => JobPostScreen()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+                child: const Text('Create a job post', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),),
+              ),
+            ),
+          )
+        ],
+      ),
+    ));
   }
 
   @override

@@ -161,6 +161,7 @@ class _AcceptedJobsScreenState extends State<AcceptedJobsScreen> {
 
   @override
   void dispose() {
+    getOngoingJobBloc.dispose();
     getUpommingJobBloc.dispose();
     super.dispose();
   }
