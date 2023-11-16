@@ -72,36 +72,34 @@ class _PostJobListScreenState extends State<PostJobListScreen> {
             loadingCard(),
             loadingCard(),
           ],
-        ) : Column(
-          children: [
-            StreamBuilder<GetPostJobResponse>(
-              stream: getPostJobBloc.subject.stream,
-              builder: (context, snapshot){
-                if(snapshot.hasData){
-                  print("snapshot error => ${snapshot.error}");
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.data!.data!.length,
-                      itemBuilder: (context, index){
-                        Datum _data = snapshot.data!.data!.data![index];
-                        return PostJobCard(data: _data, onTap: () async{
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const PostJobDetailsScreen()),
-                          );
-
-                          if (!mounted) return;
-                          getJob();
-                          getJobListener();
-                        },);
-                      });
-                }else{
-                  return _noDataLay();
-                }
-              },
-            ),
-          ],
-        )
+        ) : StreamBuilder<GetPostJobResponse>(
+          stream: getPostJobBloc.subject.stream,
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              if(snapshot.data!.data!.data!.length <= 0){
+                return _noDataLay();
+              }else{
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.data!.data!.length,
+                    itemBuilder: (context, index){
+                      Datum _data = snapshot.data!.data!.data![index];
+                      return PostJobCard(data: _data, onTap: () async{
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const PostJobDetailsScreen()),
+                        );
+                        if (!mounted) return;
+                        getJob();
+                        getJobListener();
+                      },);
+                    });
+              }
+            }else{
+              return _noDataLay();
+            }
+          },
+        ),
       )
     );
   }

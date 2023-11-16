@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
-class UpcommingJobCard extends StatefulWidget {
-  final String title;
-  const UpcommingJobCard({required this.title});
+import 'package:peaceworc_agency/model/get_upcomming_job/get_upcomming_job_response.dart';
+class UpcommingJobCard extends StatelessWidget {
+  final Data data;
+  final Function()? onTap;
+  const UpcommingJobCard({super.key, required this.data, this.onTap});
 
-  @override
-  State<UpcommingJobCard> createState() => _UpcommingJobCardState();
-}
-
-class _UpcommingJobCardState extends State<UpcommingJobCard> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PostJobDetailsScreen()));
-      },
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
         color: Colors.white,
         width: MediaQuery.of(context).size.width*0.9,
@@ -37,7 +31,7 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(child: Text(
-                          widget.title,
+                          data.title!,
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13.0),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -73,9 +67,9 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
                           children: [
                             Icon(Icons.person_outline, size: 15,),
                             SizedBox(width: 5,),
-                            Text("Child Care", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
+                            Text("${data.careItems![0].patientName}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
                             Icon(Icons.do_not_disturb_on_total_silence, color: Colors.grey[800],size: 4,),
-                            Text("Tulip, Female: 56 Yrs", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,)
+                            Text("${data.careItems![0].patientName}, Female: ${data.careItems![0].age} Yrs", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,)
                           ],
                         ),
                         SizedBox(height: 7,),
@@ -93,9 +87,9 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
                           children: [
                             Icon(Icons.calendar_month_outlined, size: 15,),
                             SizedBox(width: 5,),
-                            Text("2023-09-01", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
+                            Text("${data.startDate} to ${data.endDate}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
                             SizedBox(width: 15,),
-                            Text("7:28PM - 9:40PM", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
+                            Text("${data.startTime} - ${data.endTime}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
                           ],
                         ),
                         SizedBox(height: 10,),
@@ -104,7 +98,7 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
                           children: [
                             Row(
                               children: [
-                                Text("\u002423", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[500]),),
+                                Text("\u0024${data.amount}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[500]),),
                                 SizedBox(width: 7,),
                                 Container(
                                   decoration: BoxDecoration(
@@ -137,3 +131,4 @@ class _UpcommingJobCardState extends State<UpcommingJobCard> {
     );
   }
 }
+

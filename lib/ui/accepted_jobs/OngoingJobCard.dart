@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/model/get_ongoing_job/get_ongoing_job_response.dart';
 import 'package:peaceworc_agency/ui/post_job_list/PostJobdetailsScreen.dart';
-class OngoingJobCard extends StatefulWidget {
-  final String child;
-  const OngoingJobCard({required this.child});
-
-  @override
-  State<OngoingJobCard> createState() => _OngoingJobCardState();
-}
-
-class _OngoingJobCardState extends State<OngoingJobCard> {
+class OngoingJobCard extends StatelessWidget {
+  final Data data;
+  final Function()? onTap;
+  const OngoingJobCard({super.key, required this.data, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PostJobDetailsScreen()));
-      },
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
         color: Colors.white,
         width: 350,
@@ -38,7 +32,7 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(child: Text(
-                          widget.child,
+                          data.title!,
                           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13.0),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -52,7 +46,7 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                             child: SizedBox(width:10, child: Padding(
                               padding: const EdgeInsets.only(right: 10.0, left: 10.0, top: 1.0, bottom: 1.0),
                               child: Text(
-                                "Quick Call",
+                                ' Ongoing ',
                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                               ),
                             ))
@@ -74,9 +68,9 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                           children: [
                             Icon(Icons.person_outline, size: 15,),
                             SizedBox(width: 5,),
-                            Text("Child Care", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
+                            Text(data.careType!, style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
                             Icon(Icons.do_not_disturb_on_total_silence, color: Colors.grey[800],size: 4,),
-                            Text("Tulip, Female: 56 Yrs", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,)
+                            Text("${data.careItems![0].patientName}, Female: ${data.careItems![0].age} Yrs", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,)
                           ],
                         ),
                         SizedBox(height: 7,),
@@ -85,7 +79,7 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                           children: [
                             Icon(Icons.location_on_outlined, size: 15,),
                             SizedBox(width: 5,),
-                            Text("3087 Terminal Dr.Care, Herbor, Ky 4102563, usa", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
+                            Text("${data.shortAddress}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black),maxLines: 1,),
                           ],
                         ),
                         SizedBox(height: 7,),
@@ -94,9 +88,9 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                           children: [
                             Icon(Icons.calendar_month_outlined, size: 15,),
                             SizedBox(width: 5,),
-                            Text("2023-09-01", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
+                            Text("${data.startDate} to ${data.endDate}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
                             SizedBox(width: 15,),
-                            Text("7:28PM - 9:40PM", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
+                            Text("${data.startTime} - ${data.endTime}", style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Colors.black), maxLines: 1,),
                           ],
                         ),
                         SizedBox(height: 10,),
@@ -105,7 +99,7 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
                           children: [
                             Row(
                               children: [
-                                Text("\u002423", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[500]),),
+                                Text("\u0024${data.amount}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[500]),),
                                 SizedBox(width: 7,),
                                 Container(
                                   decoration: BoxDecoration(
@@ -138,3 +132,4 @@ class _OngoingJobCardState extends State<OngoingJobCard> {
     );
   }
 }
+
