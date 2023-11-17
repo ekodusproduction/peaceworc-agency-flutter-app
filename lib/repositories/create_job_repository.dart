@@ -51,7 +51,7 @@ class CreateJobRepository{
         'amount' : amount,
         'address' : address,
         'description' : description,
-        'medical_history' : jsonEncode(json.decode(json.encoder.convert(medical_history).replaceAll(r"\'", "'"))),
+        'medical_history' : medical_history,
         'expertise' : expertise,
         'other_requirements' : other_requirements,
         'check_list' : check_list,
