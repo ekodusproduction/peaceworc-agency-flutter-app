@@ -7,7 +7,7 @@ import '../api/api_client.dart';
 import '../api/api_links.dart';
 
 class UpdatePaymentStatusRepository{
-  Future<UpdatePaymentStatusResponse> updatePayment(int job_id, Double amount, String customer_id, Double caregiver_charge, int peaceworc_percentage, Double peaceworc_charge, int payment_status) async {
+  Future<UpdatePaymentStatusResponse> updatePayment(int job_id, String amount, String customer_id, String caregiver_charge, String peaceworc_percentage, String peaceworc_charge, int payment_status) async {
     UpdatePaymentStatusResponse _response;
     final _apiClient = ApiClient.httpWithToken();
     try {

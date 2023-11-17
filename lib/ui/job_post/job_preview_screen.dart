@@ -105,8 +105,7 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
       });
       if(value.error == null){
         if (value.success == true) {
-          //Navigator.of(context).pop();
-          _navigateToPayment(context);
+          _navigateToPayment(context, value.data!.id, value.data!.amount);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
@@ -901,10 +900,10 @@ class JobPreviewScreenState extends State<JobPreviewScreen> with jobMendatoryVal
     }
   }
 
-  void _navigateToPayment(BuildContext context){
+  void _navigateToPayment(BuildContext context, int? job_id, String? amount){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PaymentDetailsScreen()),
+      MaterialPageRoute(builder: (context) => PaymentDetailsScreen(job_id: job_id, amount: amount)),
     );
   }
 

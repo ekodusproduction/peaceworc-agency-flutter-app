@@ -7,7 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:peaceworc_agency/bloc/update_payment_status_bloc.dart';
 import 'package:peaceworc_agency/payment/payment_manager.dart';
 class PaymentDetailsScreen extends StatefulWidget {
-  const PaymentDetailsScreen({super.key});
+  final int? job_id;
+  final String? amount;
+  const PaymentDetailsScreen({this.job_id, this.amount});
 
   @override
   State<PaymentDetailsScreen> createState() => _PaymentDetailsScreenState();
@@ -19,13 +21,14 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
   @override
   void initState() {
-    updatePayment();
     updatePaymentListener();
     super.initState();
   }
 
-  void updatePayment(){
-    updatePaymentStatusBloc.updatePayment();
+  void updatePayment(String customer_id, int payment_status){
+    updatePaymentStatusBloc.updatePayment(
+        widget.job_id!, widget.amount!, customer_id, "25.00", "10", "20.00", payment_status
+    );
   }
   void updatePaymentListener() {
     setState(() {
@@ -37,7 +40,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       });
       if(value.error == null){
         if (value.success == true) {
-
+          Navigator.of(context).pop();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
@@ -99,7 +102,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          await PaymentManager.makePayment(45, "USD");
+                          var myInt = int.parse(widget.amount!);
+                          assert(myInt is int);
+                          final res = await PaymentManager.makePayment(myInt, "USD");
+                          updatePayment(res, 1);
                           // final snackBar = SnackBar(
                           //   content: const Text('Payment successful!'),
                           //   action: SnackBarAction(
