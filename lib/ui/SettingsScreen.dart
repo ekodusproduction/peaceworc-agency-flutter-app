@@ -40,11 +40,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (value.success == true) {
           _clearData();
         } else {
+          _clearData();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
           ));
         }
       } else {
+        _clearData();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(value.error.toString()),
         ));
@@ -259,6 +261,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
     Navigator.of(context).pop();
+    logoutBloc.dispose();
     Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => const LoginScreen()),(route) => false);
   }
 

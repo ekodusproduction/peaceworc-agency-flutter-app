@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/LoginScreen.dart';
 
+import '../utils/validator.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -9,7 +11,16 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMixin {
+  var companyNameController = TextEditingController();
+  var fullNameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var conPasswordController = TextEditingController();
+  bool isPasswordObscured = true;
+  bool isConPasswordObscured = true;
+  final formGlobalKey = GlobalKey < FormState > ();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,131 +29,205 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: const EdgeInsets.all(10.0),
         child: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    width: 100,
-                    height: 100,
-                    child: Image.asset("assets/images/new_logo.png")
-                ),
-                Text(
-                  'Welcome To Peaceworc',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24
+            Form(
+              key: formGlobalKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      width: 100,
+                      height: 100,
+                      child: Image.asset("assets/images/new_logo.png")
                   ),
-                ),
-                Text(
-                  'Register to join',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16
+                  Text(
+                    'Welcome To Peaceworc',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24
+                    ),
                   ),
-                ),
-                SizedBox(height: 30,),
-                SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: 'Company Name',
-                            labelStyle: TextStyle(color: Colors.white)
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: 'Full Name',
-                            labelStyle: TextStyle(color: Colors.white)
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        obscureText: false,
-                        decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white),
-                            labelText: 'Email Address',
-                            labelStyle: TextStyle(color: Colors.white)
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: TextStyle(color: Colors.white)
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        style: TextStyle(color: Colors.white),
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: TextStyle(color: Colors.white)
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            child: Text(
-                                "Register Now",
-                                style: TextStyle(fontSize: 18, color: Colors.black)
-                            ),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.only(left: 40, right: 40, top: 13, bottom: 13)),
-                                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        side: BorderSide(color: Colors.white)
-                                    )
-                                )
-                            ),
-                            onPressed: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+                  Text(
+                    'Register to join',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16
+                    ),
+                  ),
+                  SizedBox(height: 30,),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          controller: companyNameController,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: false,
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.white),
+                              labelText: 'Company Name',
+                              labelStyle: TextStyle(color: Colors.white)
+                          ),
+                          validator: (String? value) {
+                            if(isComapnyNameValid(value!).length != 0){
+                              return isComapnyNameValid(value!);
                             }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
-                      ),
-                      SizedBox(height: 30,),
-                      Text(
-                        'Already have an account?',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          controller: fullNameController,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: false,
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.white),
+                              labelText: 'Full Name',
+                              labelStyle: TextStyle(color: Colors.white)
+                          ),
+                          validator: (String? value) {
+                            if(isNameValid(value!).length != 0){
+                              return isNameValid(value!);
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
-                      ),
-                      InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                        },
-                        child: Text(
-                          'Login',
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          controller: emailController,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: false,
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.white),
+                              labelText: 'Email Address',
+                              labelStyle: TextStyle(color: Colors.white)
+                          ),
+                          validator: (String? value) {
+                            if(!isEmailValidate(value!)){
+                              return 'Invalid email address';
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        ),
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          controller: passwordController,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: isPasswordObscured,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: TextStyle(color: Colors.white),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  isPasswordObscured ? Icons.visibility
+                                      : Icons.visibility_off),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(
+                                      () {
+                                        isPasswordObscured = !isPasswordObscured;
+                                  },
+                                );
+                              },
+                            ),
+                            errorMaxLines: 3,
+                          ),
+                          validator: (String? value) {
+                            if(isPasswordValid(value!).length != 0){
+                              return isPasswordValid(value!);
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        ),
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          controller: conPasswordController,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: isConPasswordObscured,
+                          decoration: InputDecoration(
+                            labelText: 'Confirm Password',
+                            labelStyle: TextStyle(color: Colors.white),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                  isConPasswordObscured ? Icons.visibility
+                                      : Icons.visibility_off),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(
+                                      () {
+                                        isConPasswordObscured = !isConPasswordObscured;
+                                  },
+                                );
+                              },
+                            ),
+                            errorMaxLines: 3,
+                          ),
+                          validator: (String? value) {
+                            if(isConPasswordValid(value!, passwordController.text).length != 0){
+                              return isConPasswordValid(value!, passwordController.text);
+                            }
+                            return null;
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        ),
+                        SizedBox(height: 20,),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              child: Text(
+                                  "Register Now",
+                                  style: TextStyle(fontSize: 18, color: Colors.black)
+                              ),
+                              style: ButtonStyle(
+                                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.only(left: 40, right: 40, top: 13, bottom: 13)),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          side: BorderSide(color: Colors.white)
+                                      )
+                                  )
+                              ),
+                              onPressed: () => {
+                                if(formGlobalKey.currentState!.validate()){
+                                  formGlobalKey.currentState!.save(),
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+                                }
+                              }
+                          ),
+                        ),
+                        SizedBox(height: 30,),
+                        Text(
+                          'Already have an account?',
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
                               fontSize: 15
                           ),
                         ),
-                      ),
-                    ],
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Positioned(
               top: 40,

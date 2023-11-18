@@ -1,11 +1,11 @@
 class ApiLinks{
 
-  static const String BASE_URL = 'http://peaceworc.com/api/agency/';
-  static const String PUBLIC_URL = 'http://peaceworc.com/';
+  /*static const String BASE_URL = 'http://peaceworc.com/api/agency/';
+  static const String PUBLIC_URL = 'http://peaceworc.com/';*/
 
   //Dev
-  /*static const String BASE_URL = 'http://143.110.244.161/api/agency/';
-  static const String PUBLIC_URL = 'http://143.110.244.161/';*/
+  static const String BASE_URL = 'http://143.110.244.161/api/agency/';
+  static const String PUBLIC_URL = 'http://143.110.244.161/';
 
   //Live
   /*const val BASE_URL = "http://134.122.119.7/api/agency/";
