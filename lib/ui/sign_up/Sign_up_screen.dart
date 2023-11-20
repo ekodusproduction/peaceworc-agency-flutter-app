@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:peaceworc_agency/bloc/sign_up_bloc.dart';
 import 'package:peaceworc_agency/ui/HomePage.dart';
 import 'package:peaceworc_agency/ui/LoginScreen.dart';
+import 'package:peaceworc_agency/ui/sign_up/sign_up_otp_screen.dart';
 
-import '../utils/validator.dart';
+import '../../utils/validator.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,6 +22,34 @@ class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMix
   bool isPasswordObscured = true;
   bool isConPasswordObscured = true;
   final formGlobalKey = GlobalKey < FormState > ();
+
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    signUpListener();
+    super.initState();
+  }
+  void signUpListener() {
+    signUpBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpOtpScreen(email: emailController.text)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMix
                                 setState(
                                       () {
                                         isConPasswordObscured = !isConPasswordObscured;
-                                  },
+                                        },
                                 );
                               },
                             ),
@@ -197,7 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMix
                               onPressed: () => {
                                 if(formGlobalKey.currentState!.validate()){
                                   formGlobalKey.currentState!.save(),
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()))
+                                  signUpBloc.signUp(companyNameController.text, fullNameController.text, emailController.text, passwordController.text, conPasswordController.text, "fcm_token")
                                 }
                               }
                           ),
@@ -243,5 +273,11 @@ class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMix
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    signUpBloc.dispose();
+    super.dispose();
   }
 }

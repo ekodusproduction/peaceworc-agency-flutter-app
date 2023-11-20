@@ -19,6 +19,7 @@ class ApiLinks{
 
   //Api routes
   static const String login = 'login';
+  static const String signup = 'signup';
   static const String logout = 'logout';
   static const String getPostJob = 'job/get-job';
   static const String searchClient = 'client/search';
@@ -28,5 +29,4 @@ class ApiLinks{
   static const String getUpcomming = 'job/accepted-job/upcoming';
   static const String getOngoingJob = 'job/accepted-job/ongoing';
   static const String updatePayment = 'payment/update-status';
-
 }

@@ -5,6 +5,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:peaceworc_agency/bloc/job_bloc.dart';
 import 'package:peaceworc_agency/ui/SplashScreen.dart';
 import 'package:peaceworc_agency/ui/payment_details_screen/payment_details_screen.dart';
+import 'package:peaceworc_agency/ui/sign_up/sign_up_otp_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
