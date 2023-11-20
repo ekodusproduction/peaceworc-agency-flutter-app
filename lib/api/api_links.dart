@@ -20,6 +20,7 @@ class ApiLinks{
   //Api routes
   static const String login = 'login';
   static const String signup = 'signup';
+  static const String verifyOtp = 'verify-otp';
   static const String logout = 'logout';
   static const String getPostJob = 'job/get-job';
   static const String searchClient = 'client/search';

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:peaceworc_agency/bloc/sign_up_verify_otp_bloc.dart';
 class SignUpOtpScreen extends StatefulWidget {
   final String? email;
-  const SignUpOtpScreen({super.key, this.email});
+  final String? company_name;
+  const SignUpOtpScreen({super.key, this.email, this.company_name});
 
   @override
   State<SignUpOtpScreen> createState() => _SignUpOtpScreenState();
@@ -13,6 +16,35 @@ class SignUpOtpScreen extends StatefulWidget {
 class _SignUpOtpScreenState extends State<SignUpOtpScreen> {
   OtpFieldController otpController = OtpFieldController();
   var time = 0;
+  String? otp;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    verifyOtpListener();
+    super.initState();
+  }
+  void verifyOtpListener() {
+    signUpVerifyOtpBloc.subject.stream.listen((value) async {
+      setState(() {
+        isLoading = false;
+      });
+      if(value.error == null){
+        if (value.success == true) {
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpOtpScreen(email: emailController.text)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message.toString()),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(value.error.toString()),
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +96,9 @@ class _SignUpOtpScreenState extends State<SignUpOtpScreen> {
                       otpFieldStyle: OtpFieldStyle(enabledBorderColor: Colors.white),
                       style: TextStyle(fontSize: 17, color: Colors.white),
                       onChanged: (pin) {
-                        print("Changed: " + pin);
+                        setState(() {
+                          otp = pin;
+                        });
                       },
                       onCompleted: (pin) {
                         print("Completed: " + pin);
@@ -99,6 +133,31 @@ class _SignUpOtpScreenState extends State<SignUpOtpScreen> {
                       ),
                       onPressed: () =>
                       {
+                        if(otp!= null){
+                          if(otp!.length != 6){
+                            signUpVerifyOtpBloc.verifyOtp(widget.email!, otp!, widget.company_name!)
+                          }else{
+                            Fluttertoast.showToast(
+                              msg: "OTP must be a 6 digit number",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                            )
+                          }
+                        }else{
+                          Fluttertoast.showToast(
+                              msg: "Invalid OTP",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          )
+                        }
                       }
                   ),
                 ),
@@ -109,5 +168,11 @@ class _SignUpOtpScreenState extends State<SignUpOtpScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    signUpVerifyOtpBloc.dispose();
+    super.dispose();
   }
 }
