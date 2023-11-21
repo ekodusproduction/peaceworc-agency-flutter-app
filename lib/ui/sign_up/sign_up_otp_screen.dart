@@ -4,10 +4,14 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:peaceworc_agency/bloc/sign_up_verify_otp_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../HomePage.dart';
 class SignUpOtpScreen extends StatefulWidget {
   final String? email;
   final String? company_name;
-  const SignUpOtpScreen({super.key, this.email, this.company_name});
+  final String? full_name;
+  const SignUpOtpScreen({super.key, this.email, this.company_name, this.full_name});
 
   @override
   State<SignUpOtpScreen> createState() => _SignUpOtpScreenState();
@@ -31,7 +35,15 @@ class _SignUpOtpScreenState extends State<SignUpOtpScreen> {
       });
       if(value.error == null){
         if (value.success == true) {
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpOtpScreen(email: emailController.text)));
+          final prefs = await SharedPreferences.getInstance();
+          setState((){
+            prefs.setBool('isLoggedIn', true);
+            prefs.setString("auth_token", value.token.toString());
+            prefs.setString("full_name", widget.full_name!);
+            prefs.setString("user_id", value.data.toString());
+          });
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),

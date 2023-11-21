@@ -37,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> with AddClientValidationMix
       });
       if(value.error == null){
         if (value.success == true) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpOtpScreen(email: emailController.text, company_name: companyNameController.text)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpOtpScreen(email: emailController.text, company_name: companyNameController.text, full_name: fullNameController.text)));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(value.message.toString()),
