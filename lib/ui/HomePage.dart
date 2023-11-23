@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/ui/DashBoardScreen.dart';
 import 'package:peaceworc_agency/ui/job_post/JobPostScreen.dart';
 import 'package:peaceworc_agency/ui/NotificationListScreen.dart';
-import 'package:peaceworc_agency/ui/ProfileScreen.dart';
+import 'package:peaceworc_agency/ui/profile/ProfileScreen.dart';
 import 'package:peaceworc_agency/ui/SettingsScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
