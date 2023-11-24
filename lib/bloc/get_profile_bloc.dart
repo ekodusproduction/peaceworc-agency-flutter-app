@@ -2,7 +2,7 @@ import 'package:peaceworc_agency/model/get_profile/get_profile_response.dart';
 import 'package:peaceworc_agency/repositories/get_profile_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class GetProfile{
+class GetProfileBloc{
   final GetProfileRepository _repo = GetProfileRepository();
   final BehaviorSubject<GetProfileResponse> _behaviourSubject = BehaviorSubject<GetProfileResponse>();
 
@@ -15,4 +15,4 @@ class GetProfile{
   }
   BehaviorSubject<GetProfileResponse> get subject => _behaviourSubject;
 }
-final getProfile = GetProfile();
+final getProfileBloc = GetProfileBloc();
