@@ -6,7 +6,7 @@ import 'package:otp_text_field/style.dart';
 import 'package:peaceworc_agency/bloc/sign_up_verify_otp_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../HomePage.dart';
+import '../home_dash/HomePage.dart';
 class SignUpOtpScreen extends StatefulWidget {
   final String? email;
   final String? company_name;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:peaceworc_agency/ui/LoginScreen.dart';
+import 'package:peaceworc_agency/ui/login/LoginScreen.dart';
 import 'package:peaceworc_agency/ui/sign_up/Sign_up_screen.dart';
 class SelectLoginSignup extends StatelessWidget {
   const SelectLoginSignup({super.key});

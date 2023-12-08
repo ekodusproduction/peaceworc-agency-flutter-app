@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:peaceworc_agency/bloc/job_bloc.dart';
-import 'package:peaceworc_agency/ui/SplashScreen.dart';
+import 'package:peaceworc_agency/ui/splash/SplashScreen.dart';
 import 'package:peaceworc_agency/ui/payment_details_screen/payment_details_screen.dart';
 import 'package:peaceworc_agency/ui/sign_up/sign_up_otp_screen.dart';
 

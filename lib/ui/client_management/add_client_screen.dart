@@ -289,7 +289,12 @@ class _AddClientScreenState extends State<AddClientScreen> with AddClientValidat
                             border: Border.all()
                         ),
                         child: _image != null?
-                          Expanded(child: Container(height:100, width: 100, child: Image.file(File(_image!.path), fit: BoxFit.cover,))):
+                          Expanded(child: Container(
+                              height:100,
+                              width: 100,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                              child: Image.file(File(_image!.path), fit: BoxFit.cover,))
+                          ):
                         Padding(
                           padding: const EdgeInsets.all(30.0),
                           child: Icon(Icons.person_outline, color: Colors.black, size: 60,),

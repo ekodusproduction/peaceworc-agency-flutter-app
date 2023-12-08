@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/login_bloc.dart';
-import 'package:peaceworc_agency/ui/HomePage.dart';
+import 'package:peaceworc_agency/ui/home_dash/HomePage.dart';
 import 'package:peaceworc_agency/ui/sign_up/Sign_up_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

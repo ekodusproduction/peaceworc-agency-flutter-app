@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/main.dart';
-import 'package:peaceworc_agency/ui/HomePage.dart';
-import 'package:peaceworc_agency/ui/SelectLoginSignup.dart';
+import 'package:peaceworc_agency/ui/home_dash/HomePage.dart';
+import 'package:peaceworc_agency/ui/login/SelectLoginSignup.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

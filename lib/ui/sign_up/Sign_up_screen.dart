@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peaceworc_agency/bloc/sign_up_bloc.dart';
-import 'package:peaceworc_agency/ui/HomePage.dart';
-import 'package:peaceworc_agency/ui/LoginScreen.dart';
+import 'package:peaceworc_agency/ui/home_dash/HomePage.dart';
+import 'package:peaceworc_agency/ui/login/LoginScreen.dart';
 import 'package:peaceworc_agency/ui/sign_up/sign_up_otp_screen.dart';
 
 import '../../utils/validator.dart';
