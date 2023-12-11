@@ -18,10 +18,8 @@ class JobPostScreen extends StatefulWidget {
 }
 
 class _JobPostScreenState extends State<JobPostScreen> with jobMendatoryValidationMixin {
-  final mandatoryScreen = MandatoryScreen();
   int _activeStepIndex = 0;
   bool isLast = false;
-  bool isValid = false;
 
   void continueStep(){
     if(_activeStepIndex < (stepList().length-1)){
